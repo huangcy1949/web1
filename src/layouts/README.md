@@ -2,7 +2,7 @@
 
 提供了三种框架布局
 
-```jsx harmony
+```
 // router/Router.jsx
 <PageFrame layout="top-side-menu" {...props}/>;
 ```
@@ -23,8 +23,7 @@
 1. 页面头部可以隐藏/显示
 
 ## 页面头部
-```jsx harmony
-
+```
 const {page} = this.props.action;
 page.setTitle('自定义title');
 page.hide();
@@ -38,8 +37,7 @@ page.setBreadcrumbs([
 
 ## 左侧菜单
 
-```jsx harmony
-
+```
 const {side} = this.props.acion;
 side.hide();
 side.show();

@@ -2177,7 +2177,7 @@ core-js@^2.5.0, core-js@^2.5.1:
 
 core-js@~2.3.0:
   version "2.3.0"
-  resolved "http://localhost:4873/core-js/-/core-js-2.3.0.tgz#fab83fbb0b2d8dc85fa636c4b9d34c75420c6d65"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.3.0.tgz#fab83fbb0b2d8dc85fa636c4b9d34c75420c6d65"
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -3001,7 +3001,7 @@ es6-promise@^4.0.5:
 
 es6-promise@~3.0.2:
   version "3.0.2"
-  resolved "http://localhost:4873/es6-promise/-/es6-promise-3.0.2.tgz#010d5858423a5f118979665f46486a95c6ee2bb6"
+  resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-3.0.2.tgz#010d5858423a5f118979665f46486a95c6ee2bb6"
 
 es6-set@~0.1.5:
   version "0.1.5"
@@ -4344,7 +4344,7 @@ image-size@^0.5.1, image-size@~0.5.0:
 
 immediate@~3.0.5:
   version "3.0.6"
-  resolved "http://localhost:4873/immediate/-/immediate-3.0.6.tgz#9db1dbd0faf8de6fbe0f5dd5e56bb606280de69b"
+  resolved "https://registry.yarnpkg.com/immediate/-/immediate-3.0.6.tgz#9db1dbd0faf8de6fbe0f5dd5e56bb606280de69b"
 
 immutability-helper@^2.6.5:
   version "2.6.5"
@@ -5266,7 +5266,7 @@ jsx-ast-utils@^2.0.0:
 
 jszip@^3.1.5:
   version "3.1.5"
-  resolved "http://localhost:4873/jszip/-/jszip-3.1.5.tgz#e3c2a6c6d706ac6e603314036d43cd40beefdf37"
+  resolved "https://registry.yarnpkg.com/jszip/-/jszip-3.1.5.tgz#e3c2a6c6d706ac6e603314036d43cd40beefdf37"
   dependencies:
     core-js "~2.3.0"
     es6-promise "~3.0.2"
@@ -5362,7 +5362,7 @@ levn@^0.3.0, levn@~0.3.0:
 
 lie@~3.1.0:
   version "3.1.1"
-  resolved "http://localhost:4873/lie/-/lie-3.1.1.tgz#9a436b2cc7746ca59de7a41fa469b3efb76bd87e"
+  resolved "https://registry.yarnpkg.com/lie/-/lie-3.1.1.tgz#9a436b2cc7746ca59de7a41fa469b3efb76bd87e"
   dependencies:
     immediate "~3.0.5"
 
@@ -7826,7 +7826,7 @@ readable-stream@~1.1.9:
 
 readable-stream@~2.0.6:
   version "2.0.6"
-  resolved "http://localhost:4873/readable-stream/-/readable-stream-2.0.6.tgz#8f90341e68a53ccc928788dacfcd11b36eb9b78e"
+  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.0.6.tgz#8f90341e68a53ccc928788dacfcd11b36eb9b78e"
   dependencies:
     core-util-is "~1.0.0"
     inherits "~2.0.1"
@@ -8958,20 +8958,20 @@ svgo@^0.7.0:
     sax "~1.2.1"
     whet.extend "~0.9.9"
 
-sx-ajax@^1.0.2:
-  version "1.0.2"
-  resolved "http://localhost:4873/sx-ajax/-/sx-ajax-1.0.2.tgz#fb23615962c9678aa03e6c1508cb598d001b87b7"
+sx-ajax@^1.0.0:
+  version "1.0.0"
+  resolved "http://172.16.132.188:4873/sx-ajax/-/sx-ajax-1.0.0.tgz#4e63cd1e3214f7f1bbfa250b7e2e6215ce0bb117"
   dependencies:
     axios "^0.17.1"
     qs "^6.5.0"
 
 sx-antd@^1.0.0:
   version "1.0.0"
-  resolved "http://localhost:4873/sx-antd/-/sx-antd-1.0.0.tgz#540f95bf193629730fb63951583c7833d268529a"
+  resolved "http://172.16.132.188:4873/sx-antd/-/sx-antd-1.0.0.tgz#540f95bf193629730fb63951583c7833d268529a"
 
-sx-build@^1.0.2:
-  version "1.0.2"
-  resolved "http://localhost:4873/sx-build/-/sx-build-1.0.2.tgz#566fa83d92af957547598436e1e5cdd15b690d11"
+sx-build@^1.0.0:
+  version "1.0.0"
+  resolved "http://172.16.132.188:4873/sx-build/-/sx-build-1.0.0.tgz#6a15ada03a19d01f55da80164fe5acb4d9d771af"
   dependencies:
     atool-monitor "^0.4.3"
     autoprefixer "^7.1.1"
@@ -9053,7 +9053,7 @@ sx-build@^1.0.2:
 
 sx-redux@^1.0.0:
   version "1.0.0"
-  resolved "http://localhost:4873/sx-redux/-/sx-redux-1.0.0.tgz#c655714e8e005e45668617beca7f26f833326bf6"
+  resolved "http://172.16.132.188:4873/sx-redux/-/sx-redux-1.0.0.tgz#440a90a4fc737e646fcda6390731eb73b1402e47"
   dependencies:
     flux-standard-action "^2.0.0"
     lodash "^4.17.4"
@@ -9063,9 +9063,9 @@ sx-redux@^1.0.0:
     redux-thunk "^2.2.0"
     uuid "^3.1.0"
 
-sx-utils@^1.0.2:
-  version "1.0.2"
-  resolved "http://localhost:4873/sx-utils/-/sx-utils-1.0.2.tgz#52750198f130509c4e731e1738633951d033726f"
+sx-utils@^1.0.0:
+  version "1.0.3"
+  resolved "http://172.16.132.188:4873/sx-utils/-/sx-utils-1.0.3.tgz#f674f4a0b1fc997363763e329f6ed3ef8e28859b"
   dependencies:
     jszip "^3.1.5"
     lodash "^4.17.4"

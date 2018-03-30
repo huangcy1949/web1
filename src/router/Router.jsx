@@ -21,6 +21,7 @@ import IFrame from '../layouts/iframe'
 import AuthRoute from './AuthRoute';
 import {ajaxHoc} from '../commons/ajax';
 import service from '../api/api-hoc';
+import {isAuthenticated} from '../commons';
 
 const allRoutes = pageRoutes.concat(routes);
 
@@ -51,7 +52,7 @@ export default class extends Component {
                 <div>
                     <Route exact path="/login" component={Login}/>
                     <Route path="/" render={props => {
-                        if (props.location.pathname === '/login') {
+                        if (props.location.pathname === '/login' || !isAuthenticated()) {
                             return null;
                         }
                         return <PageFrame {...props}/>;

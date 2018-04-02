@@ -49,6 +49,12 @@
         // "**/ActionsExample.jsx",
     ],
 
+    //
+    "modelIgnore" : [
+        "**/index.js",
+        "**/all-models.js"
+    ],
+
     "proxy": {
         "/api/page-generator": {
             "target": "http://localhost:5000"

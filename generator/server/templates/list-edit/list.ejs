@@ -1,0 +1,114 @@
+import React, {Component} from 'react';
+import {Button} from 'antd';
+import {Operator, ListPage} from 'sx-antd';
+import {hasPermission} from '../../commons';
+import FixBottom from '../../layouts/fix-bottom';
+import PageContent from '../../layouts/page-content';
+import {connect} from '../../models';
+
+export const PAGE_ROUTE = '<%= routePath %>';
+
+@connect(state => ({
+    dataSource: state.<%= lowercaseName %>.dataSource,
+    total: state.<%= lowercaseName %>.total,
+    loading: state.<%= lowercaseName %>.loading,
+}))
+export default class <%= capitalName %>List extends Component {
+    state = {};
+
+    // TODO 查询条件
+    queryItems = [
+        [
+            {
+                type: 'input',
+                field: 'name',
+                label: '名称',
+                labelSpaceCount: 4,
+                width: 200,
+                placeholder: '请输入名称',
+            },
+        ],
+    ];
+
+    // TODO 工具条
+    toolItems = [
+        {
+            type: 'primary',
+            text: '添加',
+            icon: 'fa-plus',
+            visible: hasPermission('<%= permissionPrefix %>_ADD'),
+            onClick: () => {
+                this.props.router.push('/<%= pluralityName %>/+edit/:id');
+            },
+        },
+    ];
+
+    columns = [<% for (let i = 0;i<fields.length;i++){%>
+        {title: '<%= fields[i].title%>', dataIndex: '<%= fields[i].dataIndex%>'},<%}%>
+        {
+            title: '操作',
+            key: 'operator',
+            render: (text, record) => {
+                const {id, name} = record;
+                const successTip = `删除“${name}”成功！`;
+                const items = [
+                    {
+                        label: '修改',
+                        visible: hasPermission('<%= permissionPrefix %>_UPDATE'),
+                        onClick: () => {
+                            this.props.router.push(`/<%= pluralityName %>/+edit/${id}`);
+                        },
+                    },
+                    {
+                        label: '删除',
+                        visible: hasPermission('<%= permissionPrefix %>_DELETE'),
+                        confirm: {
+                            title: `您确定要删除“${name}”？`,
+                            onConfirm: () => {
+                                this.props.actions.<%= lowercaseName %>.deleteById({params});
+                            },
+                        },
+                    },
+                ];
+
+                return (<Operator items={items}/>);
+            },
+        },
+    ];
+
+    handleSearch = (params) => {
+        params = {...this.state.params, ...params};
+        this.setState({params});
+
+        this.props.action.<%= lowercaseName %>.getByPage({params});
+    };
+
+    render() {
+        const {
+            total,
+            dataSource,
+            loading,
+        } = this.props;
+
+        return (
+            <PageContent>
+                <ListPage
+                    loading={loading}
+                    queryItems={this.queryItems}
+                    showSearchButton
+                    showResetButton={false}
+                    toolItems={this.toolItems}
+                    columns={this.columns}
+                    onSearch={this.handleSearch}
+                    dataSource={dataSource}
+                    rowKey={record => record._id}
+                    total={total}
+                />
+                <FixBottom right>
+                    <Button type="danger">批量删除</Button>
+                    <Button type="primary">导出</Button>
+                </FixBottom>
+            </PageContent>
+        );
+    }
+}

@@ -18,6 +18,10 @@ export default {
         }
     },
 
+    getFileContent: {
+        payload: ({params, options} = {}) => ajax.post('/get-file-content', params, options),
+    },
+
     getSrcDirs: {
         payload: ({params, options} = {}) => ajax.get('/get-src-dirs', params, options),
         reducer: {

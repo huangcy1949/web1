@@ -1,5 +1,15 @@
 import React, {Component} from 'react';
-import {Form, Input, Row, Col, TreeSelect, Tooltip, Icon} from 'antd';
+import {
+    Form,
+    Input,
+    Row,
+    Col,
+    TreeSelect,
+    Tooltip,
+    Icon,
+    Button,
+    Table,
+} from 'antd';
 import {FormItemLayout} from 'sx-antd';
 import {connect} from "../models";
 
@@ -12,7 +22,6 @@ import {connect} from "../models";
 @Form.create({
     mapPropsToFields: (props) => {
         const fields = {};
-
         const listPage = props.listPage;
 
         [
@@ -20,6 +29,7 @@ import {connect} from "../models";
             'routePath',
             'outPutDir',
             'outPutFile',
+            'template',
         ].forEach(key => {
             fields[key] = Form.createFormField({
                 ...listPage[key],
@@ -34,17 +44,23 @@ import {connect} from "../models";
     },
 })
 export default class ListPage extends Component {
-    state = {};
+    state = {
+        fieldsDataSource: [
+            {title: '用户名', dataIndex: 'name'},
+            {title: '性别', dataIndex: 'gender'},
+        ],
+    };
+
+    fieldsColumns = [
+        {title: '中文名', dataIndex: 'title'},
+        {title: '字段名', dataIndex: 'dataIndex'},
+    ];
 
     componentWillMount() {
         const {formRef, form} = this.props;
         if (formRef) formRef(form);
 
         this.props.action.generator.getSrcDirs();
-    }
-
-    componentDidMount() {
-
     }
 
     componentWillReceiveProps(nextProps) {
@@ -67,13 +83,19 @@ export default class ListPage extends Component {
     }
 
     render() {
-        const {form: {getFieldDecorator}, srcDirectories} = this.props;
+        const {
+            form: {getFieldDecorator},
+            srcDirectories,
+            onPreviewCode,
+        } = this.props;
+        const {fieldsDataSource} = this.state;
         const labelSpaceCount = 12;
         const span = 8;
         const tipWidth = 30;
 
         return (
             <Form>
+                {getFieldDecorator('template')(<Input type="hidden"/>)}
                 <Row>
                     <Col span={span}>
                         <FormItemLayout
@@ -154,6 +176,16 @@ export default class ListPage extends Component {
                         </FormItemLayout>
                     </Col>
                 </Row>
+                <Table
+                    title={() => '表格字段：'}
+                    bordered
+                    columns={this.fieldsColumns}
+                    dataSource={fieldsDataSource}
+                    pagination={false}
+                />
+                <div style={{marginTop: '16px'}}>
+                    <Button type="primary" onClick={onPreviewCode}>代码预览</Button>
+                </div>
             </Form>
         );
     }

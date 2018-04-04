@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const {walkDir, generateFile} = require('../utils');
+const {walkDir, generateFile, getFileContent} = require('../utils');
 
 module.exports = {
     generatorFiles(req, res, next) {
@@ -18,7 +18,6 @@ module.exports = {
                 ],
                 queryItems: [],
                 toolItems: [],
-                template: 'templates/list-edit/list.ejs',
 
                 ...baseInfo,
                 ...listPage,
@@ -29,6 +28,29 @@ module.exports = {
         Promise.all(generates).then(() => {
             res.send(true);
         });
+    },
+
+    getFileContent(req, res, next) {
+        const {baseInfo, pageInfo} = req.body;
+        const outPutFile = path.resolve(pageInfo.outPutDir, pageInfo.outPutFile);
+
+        const config = {
+            fields: [                           // 字段配置
+                {title: '用户名', dataIndex: 'name'},
+                {title: '性别', dataIndex: 'gender'},
+                {title: '年龄', dataIndex: 'age'},
+                {title: '工作', dataIndex: 'job'},
+            ],
+            queryItems: [],
+            toolItems: [],
+
+            ...baseInfo,
+            ...pageInfo,
+            outPutFile,
+        };
+
+        getFileContent(config)
+            .then(content => res.send(content));
     },
 
     getSrcDirs(req, res, next) {

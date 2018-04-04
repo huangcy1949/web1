@@ -68,21 +68,6 @@ export default class BaseInfo extends Component {
                 <Row>
                     <Col span={span}>
                         <FormItemLayout
-                            label="模块中文名"
-                            labelSpaceCount={labelSpaceCount}
-                        >
-                            {getFieldDecorator('chineseName', {
-                                rules: [
-                                    {required: true, message: '请输入中文名',},
-                                ],
-                            })(
-                                <Input placeholder="请输入中文名"/>
-                            )}
-                        </FormItemLayout>
-                    </Col>
-
-                    <Col span={span}>
-                        <FormItemLayout
                             label="模块英文名"
                             labelSpaceCount={labelSpaceCount}
                             tip={(
@@ -108,8 +93,25 @@ export default class BaseInfo extends Component {
 
                     <Col span={span}>
                         <FormItemLayout
+                            label="模块中文名"
+                            labelSpaceCount={labelSpaceCount}
+                            tipWidth={tipWidth}
+                        >
+                            {getFieldDecorator('chineseName', {
+                                rules: [
+                                    {required: true, message: '请输入中文名',},
+                                ],
+                            })(
+                                <Input placeholder="请输入中文名"/>
+                            )}
+                        </FormItemLayout>
+                    </Col>
+
+                    <Col span={span}>
+                        <FormItemLayout
                             label="全部大写命名"
                             labelSpaceCount={labelSpaceCount}
+                            tipWidth={tipWidth}
                         >
                             {getFieldDecorator('allCapitalName', {
                                 rules: [
@@ -125,6 +127,7 @@ export default class BaseInfo extends Component {
                         <FormItemLayout
                             label="首字母小写-驼峰命名"
                             labelSpaceCount={labelSpaceCount}
+                            tipWidth={tipWidth}
                         >
                             {getFieldDecorator('lowercaseName', {
                                 rules: [
@@ -157,6 +160,7 @@ export default class BaseInfo extends Component {
                         <FormItemLayout
                             label="权限前缀"
                             labelSpaceCount={labelSpaceCount}
+                            tipWidth={tipWidth}
                         >
                             {getFieldDecorator('permissionPrefix', {
                                 rules: [
@@ -172,6 +176,7 @@ export default class BaseInfo extends Component {
                         <FormItemLayout
                             label="首字母大写-驼峰命名"
                             labelSpaceCount={labelSpaceCount}
+                            tipWidth={tipWidth}
                         >
                             {getFieldDecorator('capitalName', {
                                 rules: [

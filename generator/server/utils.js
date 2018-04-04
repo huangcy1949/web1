@@ -30,6 +30,26 @@ function allUpperCase(str) {
 }
 
 /**
+ * 基于配置，获取生成的文件内容
+ * @param cfg
+ */
+function getFileContent(cfg) {
+    const {
+        template,
+    } = cfg;
+
+    return new Promise((resolve, reject) => {
+        ejs.renderFile(template, cfg, (err, content) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(content);
+            }
+        });
+    });
+}
+
+/**
  * 写文件，如果目录不存在直接创建
  * @param toFile
  * @param content
@@ -48,6 +68,19 @@ function writeFileSync(toFile, content) {
     fs.writeFileSync(toFile, content);
 }
 
+
+/**
+ * 基于配置，生成文件
+ * @param cfg 配置信息
+ */
+function generateFile(cfg) {
+
+    const {
+        outPutFile,
+    } = cfg;
+
+    return getFileContent(cfg).then((content) => writeFileSync(outPutFile, content));
+}
 
 function walkDir(dir, root) {
     const sep = path.sep;
@@ -77,28 +110,6 @@ function walkDir(dir, root) {
 }
 
 
-/**
- * 基于配置，生成文件
- * @param cfg 配置信息
- */
-function generateFile(cfg) {
-    const {
-        template,
-        outPutFile,
-    } = cfg;
-
-    return new Promise((resolve, reject) => {
-        ejs.renderFile(template, cfg, (err, content) => {
-            if (err) {
-                reject(err);
-            } else {
-                writeFileSync(outPutFile, content);
-                resolve();
-            }
-        });
-    });
-}
-
 module.exports = {
     firstUpperCase,
     firstLowerCase,
@@ -106,4 +117,5 @@ module.exports = {
     writeFileSync,
     walkDir,
     generateFile,
+    getFileContent,
 };

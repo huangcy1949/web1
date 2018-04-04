@@ -4,6 +4,7 @@ import PageContent from '../../layouts/page-content';
 import FixBottom from '../../layouts/fix-bottom';
 import BaseInfo from '../../components/BaseInfo';
 import ListPage from '../../components/ListPage';
+import PreviewCodeModal from '../../components/PreviewCodeModal';
 import {connect} from '../../models';
 import './style.less'
 
@@ -18,6 +19,8 @@ export default class Home extends Component {
         checkedPanels: {
             listPage: true,
         },
+        codeForPreview: '',
+        previewCodeModalVisible: false,
     };
 
     componentWillMount() {
@@ -145,8 +148,34 @@ export default class Home extends Component {
         };
     };
 
+    handleListPagePreviewCode = () => {
+        this.baseInfoForm.validateFieldsAndScroll((err, baseInfo) => {
+            if (err) return;
+
+            this.listPageForm.validateFieldsAndScroll((err, listPage) => {
+                if (err) return;
+
+                const params = {baseInfo, pageInfo: listPage};
+                this.props.action.generator
+                    .getFileContent({
+                        params,
+                        onResolve: this.previewCode
+                    });
+            });
+        });
+    };
+
+    previewCode = (content) => {
+        this.setState({previewCodeModalVisible: true, codeForPreview: content});
+    };
+
     render() {
-        const {activePanelKeys, checkedPanels} = this.state;
+        const {
+            activePanelKeys,
+            checkedPanels,
+            codeForPreview,
+            previewCodeModalVisible,
+        } = this.state;
         const fileCount = Object.keys(checkedPanels).reduce((prev, next) => checkedPanels[next] ? prev + 1 : prev, 0);
         const cardStyle = {
             marginBottom: '16px',
@@ -167,6 +196,7 @@ export default class Home extends Component {
                     <Panel {...this.getPanelProps('列表页', 'listPage')}>
                         <ListPage
                             formRef={form => this.listPageForm = form}
+                            onPreviewCode={this.handleListPagePreviewCode}
                         />
                     </Panel>
                     <Panel {...this.getPanelProps('编辑页面', 'editPage')}>
@@ -176,6 +206,13 @@ export default class Home extends Component {
                         <p>model</p>
                     </Panel>
                 </Collapse>
+
+                <PreviewCodeModal
+                    visible={previewCodeModalVisible}
+                    code={codeForPreview}
+                    onCancel={() => this.setState({previewCodeModalVisible: false})}
+                    onOk={() => this.setState({previewCodeModalVisible: false})}
+                />
 
                 <FixBottom>
                     <Button

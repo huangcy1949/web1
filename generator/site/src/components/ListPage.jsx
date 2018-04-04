@@ -9,10 +9,10 @@ import {
     Icon,
     Button,
 } from 'antd';
-import {FormItemLayout} from 'sx-antd';
-import FieldsTable from './FieldsTable';
+import uuid from 'uuid/v4';
+import {FormItemLayout, Operator} from 'sx-antd';
+import EditableTable from './EditableTable';
 import {connect} from "../models";
-
 
 @connect(state => ({
     baseInfo: state.baseInfo,
@@ -31,6 +31,7 @@ import {connect} from "../models";
             'outPutFile',
             'template',
             'fields',
+            'queryItems',
         ].forEach(key => {
             fields[key] = Form.createFormField({
                 ...listPage[key],
@@ -46,6 +47,229 @@ import {connect} from "../models";
 })
 export default class ListPage extends Component {
     state = {};
+
+    fieldsColumns = [
+        {
+            title: '字段名',
+            dataIndex: 'dataIndex',
+            key: 'dataIndex',
+            width: '40%',
+            props: {
+                type: 'input',
+                placeholder: '请输入字段名',
+                decorator: {
+                    rules: [
+                        // TODO 字段名合法性校验
+                        {required: true, message: '请输入字段名！'},
+                        {
+                            validator: (rule, value, callback) => {
+                                const {fields} = this.props.listPage;
+                                let count = 0;
+
+                                fields.value.forEach(item => {
+                                    if (item.dataIndex === value) count += 1;
+                                });
+
+                                count === 2 ? callback('不可添加重复字段名！') : callback();
+                            },
+                        }
+                    ],
+                },
+            },
+        },
+        {
+            title: '中文名',
+            dataIndex: 'title',
+            key: 'title',
+            width: '40%',
+            props: {
+                type: 'input',
+                placeholder: '请输入中文名',
+                decorator: {
+                    rules: [
+                        {required: true, message: '请输入中文名！'},
+                    ],
+                },
+            },
+        },
+        {
+            title: '操作',
+            width: '20%',
+            dataIndex: 'operator',
+            render: (text, record) => {
+                const {id, title, dataIndex} = record;
+                const {form: {getFieldValue, setFieldsValue}} = this.props;
+                const value = getFieldValue('fields');
+
+                const {queryItems} = this.props.listPage;
+                const queryItemExist = queryItems.value.find(item => item.field === dataIndex);
+
+                const deleteItem = {
+                    disabled: (!value || value.length <= 1), // 只用一个字段时，不予许删除
+                    label: '删除',
+                    confirm: {
+                        title: `您确定要删除"${title || dataIndex}"吗？`,
+                        onConfirm: () => {
+                            const newValue = value.filter(item => item.id !== id);
+                            setFieldsValue({fields: newValue});
+                        },
+                    },
+                };
+
+                // 什么信息没填写，直接删除
+                if (!title && !dataIndex) {
+                    Reflect.deleteProperty(deleteItem, 'confirm');
+                    deleteItem.onClick = () => {
+                        const newValue = value.filter(item => item.id !== id);
+                        setFieldsValue({fields: newValue});
+                    };
+                }
+
+                const items = [
+                    deleteItem,
+                    {
+                        disabled: queryItemExist || !dataIndex,
+                        label: '作为条件',
+                        onClick: () => {
+                            const items = [...queryItems.value];
+                            items.push({
+                                id: uuid(),
+                                label: title,
+                                field: dataIndex,
+                                type: 'input',
+                            });
+                            console.log(items);
+                            setFieldsValue({queryItems: items});
+                        },
+                    },
+                ];
+                return <Operator items={items}/>;
+
+            },
+        },
+    ];
+
+    queryItemsColumns = [
+        {
+            title: '字段名',
+            dataIndex: 'field',
+            key: 'field',
+            width: '25%',
+            props: {
+                type: 'input',
+                placeholder: '请输入字段名',
+                decorator: {
+                    rules: [
+                        // TODO 字段名合法性校验
+                        {required: true, message: '请输入字段名！'},
+                        {
+                            validator: (rule, value, callback) => {
+                                const {queryItems} = this.props.listPage;
+                                let count = 0;
+
+                                queryItems.value.forEach(item => {
+                                    if (item.field === value) count += 1;
+                                });
+
+                                count === 2 ? callback('不可添加重复字段名！') : callback();
+                            },
+                        }
+                    ],
+                },
+            },
+        },
+        {
+            title: '中文名',
+            dataIndex: 'label',
+            key: 'label',
+            width: '25%',
+            props: {
+                type: 'input',
+                placeholder: '请输入中文名',
+                decorator: {
+                    rules: [
+                        {required: true, message: '请输入中文名！'},
+                    ],
+                },
+            },
+        },
+        {
+            title: '类型',
+            dataIndex: 'type',
+            key: 'type',
+            width: '25%',
+            props: {
+                type: 'select',
+                placeholder: '请选择类型',
+                decorator: {
+                    initialValue: 'input',
+                    rules: [
+                        {required: true, message: '请选择类型'},
+                    ],
+                },
+                getValue: e => e,
+                elementProps: {
+                    options: [
+                        {label: 'input(输入框)', value: 'input'},
+                        {label: 'number(数字输入框)', value: 'number'},
+                        {label: 'textarea(文本框)', value: 'textarea'},
+                        {label: 'password(密码框)', value: 'password'},
+                        {label: 'mobile(手机输入框)', value: 'mobile'},
+                        {label: 'email(邮件输入框)', value: 'email'},
+                        {label: 'select(下拉选择)', value: 'select'},
+                        {label: 'select-tree(下拉树)', value: 'select-tree'},
+                        {label: 'checkbox(多选框)', value: 'checkbox'},
+                        {label: 'checkbox-group(多选框组)', value: 'checkbox-group'},
+                        {label: 'radio(单选)', value: 'radio'},
+                        {label: 'radio-group(单选组)', value: 'radio-group'},
+                        {label: 'switch(切换按钮)', value: 'switch'},
+                        {label: 'date(日期)', value: 'date'},
+                        {label: 'date-time(日期-时间)', value: 'date-time'},
+                        {label: 'date-range(日期区间)', value: 'date-range'},
+                        {label: 'month(月份)', value: 'month'},
+                        {label: 'time(时间)', value: 'time'},
+                        {label: 'cascader(级联)', value: 'cascader'},
+                    ],
+                }
+            },
+        },
+        {
+            title: '操作',
+            width: '25%',
+            dataIndex: 'operator',
+            render: (text, record) => {
+                const {id, field, label} = record;
+                const {form: {getFieldValue, setFieldsValue}} = this.props;
+                const value = getFieldValue('queryItems');
+
+                const deleteItem = {
+                    label: '删除',
+                    confirm: {
+                        title: `您确定要删除"${label || field}"吗？`,
+                        onConfirm: () => {
+                            const newValue = value.filter(item => item.id !== id);
+                            setFieldsValue({queryItems: newValue});
+                        },
+                    },
+                };
+
+                // 什么信息没填写，直接删除
+                if (!field && !label) {
+                    Reflect.deleteProperty(deleteItem, 'confirm');
+                    deleteItem.onClick = () => {
+                        const newValue = value.filter(item => item.id !== id);
+                        setFieldsValue({queryItems: newValue});
+                    };
+                }
+
+                const items = [
+                    deleteItem,
+                ];
+                return <Operator items={items}/>;
+
+            },
+        },
+    ];
 
     componentWillMount() {
         const {formRef, form, validate} = this.props;
@@ -96,6 +320,15 @@ export default class ListPage extends Component {
                     }
                 });
             }),
+            new Promise((resolve, reject) => {
+                this.queryItemsTableForm.validateFieldsAndScroll((err, values) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(values);
+                    }
+                });
+            }),
         ]).then(([listPage]) => listPage);
     };
 
@@ -110,7 +343,7 @@ export default class ListPage extends Component {
         const tipWidth = 30;
 
         return (
-            <div>
+            <Form>
                 {getFieldDecorator('template')(<Input type="hidden"/>)}
                 <Row>
                     <Col span={span}>
@@ -193,23 +426,29 @@ export default class ListPage extends Component {
                         </FormItemLayout>
                     </Col>
                 </Row>
-                <FormItemLayout labelWidth={0}>
-                    {getFieldDecorator('fields', {
-                        rules: [
-                            {required: true, message: '请至少填写一个字段',},
-                        ],
-                    })(
-                        <FieldsTable
-                            formRef={form => this.fieldsTableForm = form}
-                            hasError={getFieldError('fields')}
-                            title={() => '表格字段：'}
-                        />
-                    )}
-                </FormItemLayout>
+                {getFieldDecorator('fields')(
+                    <EditableTable
+                        formRef={form => this.fieldsTableForm = form}
+                        hasError={getFieldError('fields')}
+                        title={() => '表格字段：'}
+                        columns={this.fieldsColumns}
+                        newRecord={{id: uuid(), title: '', dataIndex: ''}}
+                    />
+                )}
+
+                {getFieldDecorator('queryItems')(
+                    <EditableTable
+                        formRef={form => this.queryItemsTableForm = form}
+                        hasError={getFieldError('queryItems')}
+                        title={() => '查询条件：'}
+                        columns={this.queryItemsColumns}
+                        newRecord={{id: uuid(), field: '', label: '', type: 'input'}}
+                    />
+                )}
                 <div style={{marginTop: '16px'}}>
                     <Button type="primary" onClick={onPreviewCode}>代码预览</Button>
                 </div>
-            </div>
+            </Form>
         );
     }
 }

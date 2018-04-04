@@ -16,7 +16,7 @@ export default class PreviewCodeModal extends Component {
     static defaultProps = {
         visible: false,
         code: '',
-        width: '60%',
+        width: '70%',
     };
     state = {};
 

@@ -14,21 +14,21 @@ export const PAGE_ROUTE = '<%= routePath %>';
     loading: state.<%= lowercaseName %>.loading,
 }))
 export default class <%= capitalName %>List extends Component {
-    state = {};
+    state = {};<%if(queryItems && queryItems.length){%>
 
     // TODO 查询条件
     queryItems = [
-        [
+        [<% for (let i = 0;i<queryItems.length;i++){%>
             {
-                type: 'input',
-                field: 'name',
-                label: '名称',
+                type: '<%= queryItems[i].type%>',
+                field: '<%= queryItems[i].field%>',
+                label: '<%= queryItems[i].label%>',
                 labelSpaceCount: 4,
                 width: 200,
-                placeholder: '请输入名称',
-            },
+                placeholder: '请输入<%= queryItems[i].label%>',
+            },<%}%>
         ],
-    ];
+    ];<%}%>
 
     // TODO 工具条
     toolItems = [
@@ -93,8 +93,8 @@ export default class <%= capitalName %>List extends Component {
         return (
             <PageContent>
                 <ListPage
-                    loading={loading}
-                    queryItems={this.queryItems}
+                    loading={loading}<%if(queryItems && queryItems.length){%>
+                    queryItems={this.queryItems}<%}%>
                     showSearchButton
                     showResetButton={false}
                     toolItems={this.toolItems}

@@ -35,12 +35,6 @@ module.exports = {
         const outPutFile = path.resolve(pageInfo.outPutDir, pageInfo.outPutFile);
 
         const config = {
-            fields: [                           // 字段配置
-                {title: '用户名', dataIndex: 'name'},
-                {title: '性别', dataIndex: 'gender'},
-                {title: '年龄', dataIndex: 'age'},
-                {title: '工作', dataIndex: 'job'},
-            ],
             queryItems: [],
             toolItems: [],
 

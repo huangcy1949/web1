@@ -28,14 +28,31 @@ export default class BaseInfo extends Component {
     state = {};
 
     componentWillMount() {
-        const {formRef, form} = this.props;
+        const {formRef, form, validate} = this.props;
         if (formRef) formRef(form);
+
+        if (validate) validate(this.validate)
     }
 
 
     componentDidMount() {
 
     }
+
+    validate = () => {
+        const {form} = this.props;
+
+        return new Promise((resolve, reject) => {
+            form.validateFieldsAndScroll((err, values) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(values)
+                }
+            });
+        });
+    };
+
 
     handleChange = (e) => {
         e.preventDefault();

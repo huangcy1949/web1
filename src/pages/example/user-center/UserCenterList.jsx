@@ -6,14 +6,14 @@ import FixBottom from '../../layouts/fix-bottom';
 import PageContent from '../../layouts/page-content';
 import {connect} from '../../models';
 
-export const PAGE_ROUTE = '<%= routePath %>';
+export const PAGE_ROUTE = '/user-center';
 
 @connect(state => ({
-    dataSource: state.<%= lowercaseName %>.dataSource,
-    total: state.<%= lowercaseName %>.total,
-    loading: state.<%= lowercaseName %>.loading,
+    dataSource: state.userCenter.dataSource,
+    total: state.userCenter.total,
+    loading: state.userCenter.loading,
 }))
-export default class <%= capitalName %>List extends Component {
+export default class UserCenterList extends Component {
     state = {};
 
     // TODO 查询条件
@@ -36,15 +36,16 @@ export default class <%= capitalName %>List extends Component {
             type: 'primary',
             text: '添加',
             icon: 'fa-plus',
-            visible: hasPermission('<%= permissionPrefix %>_ADD'),
+            visible: hasPermission('USER_CENTER_ADD'),
             onClick: () => {
-                this.props.router.push('/<%= pluralityName %>/+edit/:id');
+                this.props.router.push('/userCenters/+edit/:id');
             },
         },
     ];
 
-    columns = [<% for (let i = 0;i<fields.length;i++){%>
-        {title: '<%= fields[i].title%>', dataIndex: '<%= fields[i].dataIndex%>'},<%}%>
+    columns = [
+        {title: '用户名', dataIndex: 'name'},
+        {title: '年龄', dataIndex: 'age'},
         {
             title: '操作',
             key: 'operator',
@@ -54,18 +55,18 @@ export default class <%= capitalName %>List extends Component {
                 const items = [
                     {
                         label: '修改',
-                        visible: hasPermission('<%= permissionPrefix %>_UPDATE'),
+                        visible: hasPermission('USER_CENTER_UPDATE'),
                         onClick: () => {
-                            this.props.router.push(`/<%= pluralityName %>/+edit/${id}`);
+                            this.props.router.push(`/userCenters/+edit/${id}`);
                         },
                     },
                     {
                         label: '删除',
-                        visible: hasPermission('<%= permissionPrefix %>_DELETE'),
+                        visible: hasPermission('USER_CENTER_DELETE'),
                         confirm: {
                             title: `您确定要删除“${name}”？`,
                             onConfirm: () => {
-                                this.props.actions.<%= lowercaseName %>.deleteById({params: {id}, successTip});
+                                this.props.actions.userCenter.deleteById({params: {id}, successTip});
                             },
                         },
                     },
@@ -80,7 +81,7 @@ export default class <%= capitalName %>List extends Component {
         params = {...this.state.params, ...params};
         this.setState({params});
 
-        this.props.action.<%= lowercaseName %>.getByPage({params});
+        this.props.action.userCenter.getByPage({params});
     };
 
     render() {

@@ -10,10 +10,6 @@ export default {
         payload: ({params, options} = {}) => ajax.post('/generator-files', params, options),
         reducer: {
             pending: () => ({loading: true}),
-            resolve(state, {payload = {}}) {
-                console.log(payload);
-                return {};
-            },
             complete: () => ({loading: false}),
         }
     },

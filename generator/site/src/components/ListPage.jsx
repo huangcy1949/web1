@@ -8,9 +8,9 @@ import {
     Tooltip,
     Icon,
     Button,
-    Table,
 } from 'antd';
 import {FormItemLayout} from 'sx-antd';
+import FieldsTable from './FieldsTable';
 import {connect} from "../models";
 
 
@@ -30,6 +30,7 @@ import {connect} from "../models";
             'outPutDir',
             'outPutFile',
             'template',
+            'fields',
         ].forEach(key => {
             fields[key] = Form.createFormField({
                 ...listPage[key],
@@ -44,21 +45,12 @@ import {connect} from "../models";
     },
 })
 export default class ListPage extends Component {
-    state = {
-        fieldsDataSource: [
-            {title: '用户名', dataIndex: 'name'},
-            {title: '性别', dataIndex: 'gender'},
-        ],
-    };
-
-    fieldsColumns = [
-        {title: '中文名', dataIndex: 'title'},
-        {title: '字段名', dataIndex: 'dataIndex'},
-    ];
+    state = {};
 
     componentWillMount() {
-        const {formRef, form} = this.props;
+        const {formRef, form, validate} = this.props;
         if (formRef) formRef(form);
+        if (validate) validate(this.validate);
 
         this.props.action.generator.getSrcDirs();
     }
@@ -82,19 +74,43 @@ export default class ListPage extends Component {
         }
     }
 
+    validate = () => {
+        const {form} = this.props;
+
+        return Promise.all([
+            new Promise((resolve, reject) => {
+                form.validateFieldsAndScroll((err, values) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(values)
+                    }
+                });
+            }),
+            new Promise((resolve, reject) => {
+                this.fieldsTableForm.validateFieldsAndScroll((err, values) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(values);
+                    }
+                });
+            }),
+        ]).then(([listPage]) => listPage);
+    };
+
     render() {
         const {
-            form: {getFieldDecorator},
+            form: {getFieldDecorator, getFieldError},
             srcDirectories,
             onPreviewCode,
         } = this.props;
-        const {fieldsDataSource} = this.state;
         const labelSpaceCount = 12;
         const span = 8;
         const tipWidth = 30;
 
         return (
-            <Form>
+            <div>
                 {getFieldDecorator('template')(<Input type="hidden"/>)}
                 <Row>
                     <Col span={span}>
@@ -110,6 +126,7 @@ export default class ListPage extends Component {
                                 ],
                             })(
                                 <TreeSelect
+                                    style={{width: '100%'}}
                                     showSearch
                                     dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
                                     treeData={srcDirectories}
@@ -176,17 +193,23 @@ export default class ListPage extends Component {
                         </FormItemLayout>
                     </Col>
                 </Row>
-                <Table
-                    title={() => '表格字段：'}
-                    bordered
-                    columns={this.fieldsColumns}
-                    dataSource={fieldsDataSource}
-                    pagination={false}
-                />
+                <FormItemLayout labelWidth={0}>
+                    {getFieldDecorator('fields', {
+                        rules: [
+                            {required: true, message: '请至少填写一个字段',},
+                        ],
+                    })(
+                        <FieldsTable
+                            formRef={form => this.fieldsTableForm = form}
+                            hasError={getFieldError('fields')}
+                            title={() => '表格字段：'}
+                        />
+                    )}
+                </FormItemLayout>
                 <div style={{marginTop: '16px'}}>
                     <Button type="primary" onClick={onPreviewCode}>代码预览</Button>
                 </div>
-            </Form>
+            </div>
         );
     }
 }

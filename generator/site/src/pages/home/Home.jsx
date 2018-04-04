@@ -28,74 +28,71 @@ export default class Home extends Component {
     }
 
     handleSubmit = () => {
-        this.baseInfoForm.validateFieldsAndScroll((err, baseInfo) => {
-            if (err) return;
+        const {checkedPanels} = this.state;
+        const allPromise = [this.validateBaseInfo()];
 
-            const params = {};
-            const {checkedPanels} = this.state;
+        if (checkedPanels.listPage) {
+            allPromise.push(this.validateListPage());
+        }
 
-            if (checkedPanels.listPage) {
-                this.listPageForm.validateFieldsAndScroll((err, listPage) => {
-                    if (err) return;
+        window.Promise.all(allPromise)
+            .then(values => {
+                const baseInfo = values.shift();
+                const params = {};
+                if (checkedPanels.listPage) {
+                    params.listPage = values.shift();
+                }
 
-                    params.listPage = listPage;
-                    this.doSubmit(params, baseInfo);
-                });
-            }
-        });
+                this.doSubmit(params, baseInfo);
+
+            }).catch(console.log);
     };
 
     doSubmit = (params, baseInfo) => {
-        const {checkedPanels} = this.state;
-
-        const fileCount = Object.keys(checkedPanels).reduce((prev, next) => checkedPanels[next] ? prev + 1 : prev, 0);
         const fileKeys = Object.keys(params);
+        const files = [];
 
-        // 数据数量，与选中生成模块数量相同，则进行提交
-        if (fileKeys.length === fileCount) {
-            const files = [];
-
-            fileKeys.forEach(key => {
-                const config = params[key];
-                const {outPutDir, outPutFile} = config;
-                files.push({
-                    fileDir: outPutDir,
-                    fileName: outPutFile,
-                });
-
+        fileKeys.forEach(key => {
+            const config = params[key];
+            const {outPutDir, outPutFile} = config;
+            files.push({
+                fileDir: outPutDir,
+                fileName: outPutFile,
             });
 
-            this.props.action.generator.checkFileExist({
-                params: {files}, onResolve: (result) => {
-                    const existFiles = [];
-                    if (result && result.length) {
-                        result.forEach(({fileName, exist}) => {
-                            if (exist) {
-                                existFiles.push(fileName);
-                            }
-                        })
-                    }
-                    if (existFiles.length) {
-                        return Modal.confirm({
-                            title: '需要确认',
-                            content: (
-                                <span>
-                                    <div>如下文件已存在，是否覆盖？</div>
-                                    {existFiles.map(item => <div key={item} style={{color: 'red'}}>{item}</div>)}
-                                 </span>
-                            ),
-                            okText: '确认',
-                            cancelText: '取消',
-                            onOk: () => {
-                                this.props.action.generator.generatorFiles({params: {baseInfo, ...params}, successTip: '生成成功！'});
-                            },
-                        });
+        });
 
-                    }
-                    this.props.action.generator.generatorFiles({params: {baseInfo, ...params}, successTip: '生成成功！'});
+        // 校验文件是否存在
+        this.props.action.generator.checkFileExist({
+            params: {files}, onResolve: (result) => {
+                const existFiles = [];
+                if (result && result.length) {
+                    result.forEach(({fileName, exist}) => {
+                        if (exist) {
+                            existFiles.push(fileName);
+                        }
+                    })
                 }
-            });
-        }
+                if (existFiles.length) {
+                    return Modal.confirm({
+                        title: '需要确认',
+                        content: (
+                            <span>
+                                <div>如下文件已存在，是否覆盖？</div>
+                                {existFiles.map(item => <div key={item} style={{color: 'red'}}>{item}</div>)}
+                             </span>
+                        ),
+                        okText: '确认',
+                        cancelText: '取消',
+                        onOk: () => {
+                            this.props.action.generator.generatorFiles({params: {baseInfo, ...params}, successTip: '生成成功！'});
+                        },
+                    });
+
+                }
+                this.props.action.generator.generatorFiles({params: {baseInfo, ...params}, successTip: '生成成功！'});
+            }
+        });
     };
 
     handlePanelChange = (activePanelKeys) => {
@@ -149,20 +146,17 @@ export default class Home extends Component {
     };
 
     handleListPagePreviewCode = () => {
-        this.baseInfoForm.validateFieldsAndScroll((err, baseInfo) => {
-            if (err) return;
-
-            this.listPageForm.validateFieldsAndScroll((err, listPage) => {
-                if (err) return;
-
-                const params = {baseInfo, pageInfo: listPage};
-                this.props.action.generator
-                    .getFileContent({
-                        params,
-                        onResolve: this.previewCode
-                    });
-            });
-        });
+        window.Promise.all([
+            this.validateBaseInfo(),
+            this.validateListPage(),
+        ]).then(([baseInfo, listPage]) => {
+            const params = {baseInfo, pageInfo: listPage};
+            this.props.action.generator
+                .getFileContent({
+                    params,
+                    onResolve: this.previewCode
+                });
+        }).catch(console.log);
     };
 
     previewCode = (content) => {
@@ -188,6 +182,7 @@ export default class Home extends Component {
                     style={cardStyle}
                 >
                     <BaseInfo
+                        validate={validate => this.validateBaseInfo = validate}
                         formRef={form => this.baseInfoForm = form}
                     />
                 </Card>
@@ -196,6 +191,7 @@ export default class Home extends Component {
                     <Panel {...this.getPanelProps('列表页', 'listPage')}>
                         <ListPage
                             formRef={form => this.listPageForm = form}
+                            validate={validate => this.validateListPage = validate}
                             onPreviewCode={this.handleListPagePreviewCode}
                         />
                     </Panel>

@@ -5,6 +5,7 @@ export default {
         outPutDir: {value: void 0},
         outPutFile: {value: void 0},
         template: {value: 'templates/list-edit/list.ejs'},
+        fields: {value: [{id: 'init-field', title: '', dataIndex: ''}]},
 
         outPutFileExist: false,
         loading: false,

@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import {Button} from 'antd';
-import {Operator, ListPage} from 'sx-antd';
-import {hasPermission} from '../../commons';
-import FixBottom from '../../layouts/fix-bottom';
-import PageContent from '../../layouts/page-content';
-import {connect} from '../../models';
+import {Operator, ListPage, ToolItem} from 'sx-antd';
+import {hasPermission} from '../../../commons';
+import FixBottom from '../../../layouts/fix-bottom';
+import PageContent from '../../../layouts/page-content';
+import {connect} from '../../../models';
 
 export const PAGE_ROUTE = '/user-center';
 
@@ -14,7 +13,11 @@ export const PAGE_ROUTE = '/user-center';
     loading: state.userCenter.loading,
 }))
 export default class UserCenterList extends Component {
-    state = {};
+    state = {
+        params: {
+            pageNum: 1,
+        },
+    };
 
     // TODO 查询条件
     queryItems = [
@@ -22,23 +25,42 @@ export default class UserCenterList extends Component {
             {
                 type: 'input',
                 field: 'name',
-                label: '名称',
+                label: '用户名',
                 labelSpaceCount: 4,
                 width: 200,
-                placeholder: '请输入名称',
+                placeholder: '请输入用户名',
+            },
+            {
+                type: 'input',
+                field: 'age',
+                label: '年龄',
+                labelSpaceCount: 4,
+                width: 200,
+                placeholder: '请输入年龄',
             },
         ],
     ];
 
-    // TODO 工具条
+    // TODO 顶部工具条
     toolItems = [
         {
             type: 'primary',
             text: '添加',
-            icon: 'fa-plus',
-            visible: hasPermission('USER_CENTER_ADD'),
+            icon: '',
             onClick: () => {
-                this.props.router.push('/userCenters/+edit/:id');
+                // TODO
+            },
+        },
+    ];
+
+    // TODO 底部工具条
+    bottomToolItems = [
+        {
+            type: 'primary',
+            text: '导出',
+            icon: '',
+            onClick: () => {
+                // TODO
             },
         },
     ];
@@ -57,7 +79,7 @@ export default class UserCenterList extends Component {
                         label: '修改',
                         visible: hasPermission('USER_CENTER_UPDATE'),
                         onClick: () => {
-                            this.props.router.push(`/userCenters/+edit/${id}`);
+                            this.props.history.push(`/user-center/+edit/${id}`);
                         },
                     },
                     {
@@ -66,7 +88,7 @@ export default class UserCenterList extends Component {
                         confirm: {
                             title: `您确定要删除“${name}”？`,
                             onConfirm: () => {
-                                this.props.actions.userCenter.deleteById({params: {id}, successTip});
+                                this.props.action.userCenter.deleteById({params: {id}, successTip});
                             },
                         },
                     },
@@ -90,24 +112,29 @@ export default class UserCenterList extends Component {
             dataSource,
             loading,
         } = this.props;
+        const {pageNum} = this.state.params;
 
         return (
             <PageContent>
                 <ListPage
-                    loading={loading}
-                    queryItems={this.queryItems}
                     showSearchButton
                     showResetButton={false}
+                    queryItems={this.queryItems}
                     toolItems={this.toolItems}
-                    columns={this.columns}
-                    onSearch={this.handleSearch}
-                    dataSource={dataSource}
-                    rowKey={record => record._id}
+                    onSearch={params => this.handleSearch({...params, pageNum: 1})}
                     total={total}
+                    pageNum={pageNum}
+                    onPageNumChange={pn => this.handleSearch({pageNum: pn})}
+                    tableProps={{
+                        loading,
+                        columns: this.columns,
+                        dataSource,
+                        // TODO 这个rowKey未必正确
+                        rowKey: record => record.id,
+                    }}
                 />
                 <FixBottom right>
-                    <Button type="danger">批量删除</Button>
-                    <Button type="primary">导出</Button>
+                    <ToolItem items={this.bottomToolItems}/>
                 </FixBottom>
             </PageContent>
         );

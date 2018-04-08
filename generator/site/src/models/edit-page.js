@@ -4,11 +4,8 @@ export default {
         routePath: {value: void 0},
         outPutDir: {value: void 0},
         outPutFile: {value: void 0},
-        template: {value: 'templates/list-edit/list.ejs'},
+        template: {value: 'templates/list-edit/edit.ejs'},
         fields: {value: [{id: 'init-field', title: '', dataIndex: ''}]},
-        queryItems: {value: []},
-        toolItems: {value: []},
-        bottomToolItems: {value: []},
 
         loading: false,
     },

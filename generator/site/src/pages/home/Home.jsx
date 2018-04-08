@@ -4,6 +4,8 @@ import PageContent from '../../layouts/page-content';
 import FixBottom from '../../layouts/fix-bottom';
 import BaseInfo from '../../components/BaseInfo';
 import ListPage from '../../components/ListPage';
+import EditPage from '../../components/EditPage';
+import ListEditModel from '../../components/ListEditModel';
 import PreviewCodeModal from '../../components/PreviewCodeModal';
 import {connect} from '../../models';
 import './style.less'
@@ -15,9 +17,11 @@ const Panel = Collapse.Panel;
 @connect(state => ({srcDirectories: state.generator.srcDirectories}))
 export default class Home extends Component {
     state = {
-        activePanelKeys: ['listPage'],
+        activePanelKeys: ['listPage', 'editPage', 'listEditModel'],
         checkedPanels: {
             listPage: true,
+            editPage: true,
+            listEditModel: true,
         },
         codeForPreview: '',
         previewCodeModalVisible: false,
@@ -35,12 +39,29 @@ export default class Home extends Component {
             allPromise.push(this.validateListPage());
         }
 
+        if (checkedPanels.editPage) {
+            allPromise.push(this.validateEditPage());
+        }
+
+        if (checkedPanels.listEditModel) {
+            allPromise.push(this.validateListEditModel());
+        }
+
         window.Promise.all(allPromise)
             .then(values => {
                 const baseInfo = values.shift();
                 const params = {};
+
                 if (checkedPanels.listPage) {
                     params.listPage = values.shift();
+                }
+
+                if (checkedPanels.editPage) {
+                    params.editPage = values.shift();
+                }
+
+                if (checkedPanels.listEditModel) {
+                    params.listEditModel = values.shift();
                 }
 
                 this.doSubmit(params, baseInfo);
@@ -64,7 +85,8 @@ export default class Home extends Component {
 
         // 校验文件是否存在
         this.props.action.generator.checkFileExist({
-            params: {files}, onResolve: (result) => {
+            params: {files},
+            onResolve: (result) => {
                 const existFiles = [];
                 if (result && result.length) {
                     result.forEach(({fileName, exist}) => {
@@ -159,6 +181,34 @@ export default class Home extends Component {
         }).catch(console.log);
     };
 
+    handleEditPagePreviewCode = () => {
+        window.Promise.all([
+            this.validateBaseInfo(),
+            this.validateEditPage(),
+        ]).then(([baseInfo, editPage]) => {
+            const params = {baseInfo, pageInfo: editPage};
+            this.props.action.generator
+                .getFileContent({
+                    params,
+                    onResolve: this.previewCode
+                });
+        }).catch(console.log);
+    };
+
+    handleListEditModelPreviewCode = () => {
+        window.Promise.all([
+            this.validateBaseInfo(),
+            this.validateListEditModel(),
+        ]).then(([baseInfo, listEditModel]) => {
+            const params = {baseInfo, pageInfo: listEditModel};
+            this.props.action.generator
+                .getFileContent({
+                    params,
+                    onResolve: this.previewCode
+                });
+        }).catch(console.log);
+    };
+
     previewCode = (content) => {
         this.setState({previewCodeModalVisible: true, codeForPreview: content});
     };
@@ -183,23 +233,27 @@ export default class Home extends Component {
                 >
                     <BaseInfo
                         validate={validate => this.validateBaseInfo = validate}
-                        formRef={form => this.baseInfoForm = form}
                     />
                 </Card>
 
                 <Collapse activeKey={activePanelKeys} onChange={this.handlePanelChange}>
                     <Panel {...this.getPanelProps('列表页', 'listPage')}>
                         <ListPage
-                            formRef={form => this.listPageForm = form}
                             validate={validate => this.validateListPage = validate}
                             onPreviewCode={this.handleListPagePreviewCode}
                         />
                     </Panel>
                     <Panel {...this.getPanelProps('编辑页面', 'editPage')}>
-                        <p>编辑页</p>
+                        <EditPage
+                            validate={validate => this.validateEditPage = validate}
+                            onPreviewCode={this.handleEditPagePreviewCode}
+                        />
                     </Panel>
-                    <Panel {...this.getPanelProps('model', 'model')}>
-                        <p>model</p>
+                    <Panel {...this.getPanelProps('列表页&编辑页model', 'listEditModel')}>
+                        <ListEditModel
+                            validate={validate => this.validateListEditModel = validate}
+                            onPreviewCode={this.handleListEditModelPreviewCode}
+                        />
                     </Panel>
                 </Collapse>
 

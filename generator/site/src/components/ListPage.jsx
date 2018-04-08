@@ -12,6 +12,7 @@ import {
 import uuid from 'uuid/v4';
 import {FormItemLayout, Operator} from 'sx-antd';
 import EditableTable from './EditableTable';
+import FontIconInput from './FontIconInput';
 import {connect} from "../models";
 
 @connect(state => ({
@@ -32,6 +33,8 @@ import {connect} from "../models";
             'template',
             'fields',
             'queryItems',
+            'toolItems',
+            'bottomToolItems',
         ].forEach(key => {
             fields[key] = Form.createFormField({
                 ...listPage[key],
@@ -75,6 +78,12 @@ export default class ListPage extends Component {
                         }
                     ],
                 },
+                elementProps: {
+                    onPressEnter: (e) => {
+                        const currentTr = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+                        currentTr.getElementsByTagName('input')[1].focus();
+                    },
+                },
             },
         },
         {
@@ -89,6 +98,25 @@ export default class ListPage extends Component {
                     rules: [
                         {required: true, message: '请输入中文名！'},
                     ],
+                    onKeyUp: (e) => {
+                        console.log(e);
+                    },
+                },
+                elementProps: {
+                    onPressEnter: (e) => {
+                        const {form: {getFieldValue, setFieldsValue}} = this.props;
+                        const value = getFieldValue('fields');
+                        const currentTr = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+                        const nextTr = currentTr.nextSibling;
+
+                        if (!nextTr) { // 当前输入框在最后一行，新增一行，并且新增行第一个输入框获取焦点
+                            value.push({id: uuid(), title: '', dataIndex: ''});
+                            setFieldsValue({fields: value});
+                            setTimeout(() => currentTr.nextSibling.getElementsByTagName('input')[0].focus());
+                        } else {
+                            nextTr.getElementsByTagName('input')[0].focus();
+                        }
+                    },
                 },
             },
         },
@@ -271,12 +299,241 @@ export default class ListPage extends Component {
         },
     ];
 
+    toolItemsColumns = [
+        {
+            title: '类型',
+            dataIndex: 'type',
+            key: 'type',
+            width: '20%',
+            props: {
+                type: 'select',
+                placeholder: '请选择类型',
+                elementProps: {
+                    options: [
+                        {value: 'primary', label: '主按钮'},
+                        {value: 'default', label: '次按钮'},
+                        {value: 'dashed', label: '虚线按钮'},
+                        {value: 'danger', label: '危险按钮'},
+                    ],
+                },
+                getValue: e => e,
+                decorator: {
+                    rules: [
+                        {required: true, message: '请选择类型！'},
+                    ],
+                },
+            },
+        },
+        {
+            title: '名称',
+            dataIndex: 'text',
+            key: 'text',
+            width: '20%',
+            props: {
+                type: 'input',
+                placeholder: '请输入名称',
+                decorator: {
+                    rules: [
+                        {required: true, message: '请输入名称！'},
+                    ],
+                },
+            },
+        },
+        {
+            title: '图标',
+            dataIndex: 'icon',
+            key: 'icon',
+            width: '20%',
+            props: {
+                decorator: {
+                    initialValue: 'plus',
+                    rules: [
+                        {required: false, message: '请选择图标'},
+                    ],
+                },
+                component: <FontIconInput/>,
+                getValue: e => e,
+            },
+        },
+        {
+            title: '权限码',
+            dataIndex: 'permission',
+            key: 'permission',
+            width: '20%',
+            props: {
+                type: 'input',
+                placeholder: '请输入权限码',
+                decorator: {
+                    getValueFromEvent: e => {
+                        const {value} = e.target;
+                        return value ? value.toUpperCase() : '';
+                    },
+                },
+            },
+        },
+        {
+            title: '操作',
+            width: '20%',
+            dataIndex: 'operator',
+            render: (_text, record) => {
+                const {id, type, text} = record;
+                const {form: {getFieldValue, setFieldsValue}} = this.props;
+                const value = getFieldValue('toolItems');
+
+                const deleteItem = {
+                    label: '删除',
+                    confirm: {
+                        title: `您确定要删除"${text || type}"吗？`,
+                        onConfirm: () => {
+                            const newValue = value.filter(item => item.id !== id);
+                            setFieldsValue({toolItems: newValue});
+                        },
+                    },
+                };
+
+                // 什么信息没填写，直接删除
+                if (!text && !type) {
+                    Reflect.deleteProperty(deleteItem, 'confirm');
+                    deleteItem.onClick = () => {
+                        const newValue = value.filter(item => item.id !== id);
+                        setFieldsValue({toolItems: newValue});
+                    };
+                }
+
+                const items = [
+                    deleteItem,
+                ];
+                return <Operator items={items}/>;
+
+            },
+        },
+    ];
+
+    bottomToolItemsColumns = [
+        {
+            title: '类型',
+            dataIndex: 'type',
+            key: 'type',
+            width: '20%',
+            props: {
+                type: 'select',
+                placeholder: '请选择类型',
+                elementProps: {
+                    options: [
+                        {value: 'primary', label: '主按钮'},
+                        {value: 'default', label: '次按钮'},
+                        {value: 'dashed', label: '虚线按钮'},
+                        {value: 'danger', label: '危险按钮'},
+                    ],
+                },
+                getValue: e => e,
+                decorator: {
+                    rules: [
+                        {required: true, message: '请选择类型！'},
+                    ],
+                },
+            },
+        },
+        {
+            title: '名称',
+            dataIndex: 'text',
+            key: 'text',
+            width: '20%',
+            props: {
+                type: 'input',
+                placeholder: '请输入名称',
+                decorator: {
+                    rules: [
+                        {required: true, message: '请输入名称！'},
+                    ],
+                },
+            },
+        },
+        {
+            title: '图标',
+            dataIndex: 'icon',
+            key: 'icon',
+            width: '20%',
+            props: {
+                decorator: {
+                    initialValue: 'plus',
+                    rules: [
+                        {required: false, message: '请选择图标'},
+                    ],
+                },
+                component: <FontIconInput/>,
+                getValue: e => e,
+            },
+        },
+        {
+            title: '权限码',
+            dataIndex: 'permission',
+            key: 'permission',
+            width: '20%',
+            props: {
+                type: 'input',
+                placeholder: '请输入权限码',
+                decorator: {
+                    getValueFromEvent: e => {
+                        const {value} = e.target;
+                        return value ? value.toUpperCase() : '';
+                    },
+                },
+            },
+        },
+        {
+            title: '操作',
+            width: '20%',
+            dataIndex: 'operator',
+            render: (_text, record) => {
+                const {id, type, text} = record;
+                const {form: {getFieldValue, setFieldsValue}} = this.props;
+                const value = getFieldValue('bottomToolItems');
+
+                const deleteItem = {
+                    label: '删除',
+                    confirm: {
+                        title: `您确定要删除"${text || type}"吗？`,
+                        onConfirm: () => {
+                            const newValue = value.filter(item => item.id !== id);
+                            setFieldsValue({bottomToolItems: newValue});
+                        },
+                    },
+                };
+
+                // 什么信息没填写，直接删除
+                if (!text && !type) {
+                    Reflect.deleteProperty(deleteItem, 'confirm');
+                    deleteItem.onClick = () => {
+                        const newValue = value.filter(item => item.id !== id);
+                        setFieldsValue({bottomToolItems: newValue});
+                    };
+                }
+
+                const items = [
+                    deleteItem,
+                ];
+                return <Operator items={items}/>;
+
+            },
+        },
+    ];
+
     componentWillMount() {
         const {formRef, form, validate} = this.props;
         if (formRef) formRef(form);
         if (validate) validate(this.validate);
 
-        this.props.action.generator.getSrcDirs();
+        this.props.action.generator.getSrcDirs({
+            onResolve: (dirs) => {
+                if (dirs && dirs.length) {
+                    const dir = dirs.find(item => item.value.endsWith('/src/pages'));
+                    if (dir) {
+                        form.setFieldsValue({outPutDir: dir.value});
+                    }
+                }
+            },
+        });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -286,7 +543,7 @@ export default class ListPage extends Component {
         const capitalName = nextProps.baseInfo.capitalName.value;
 
         if (name !== oldName) {
-            const ajaxUrl = `/api/${name}`;
+            const ajaxUrl = `/${name}`;
             const routePath = `/${name}`;
             const outPutFile = `${name}/${capitalName}List.jsx`;
 
@@ -301,35 +558,23 @@ export default class ListPage extends Component {
     validate = () => {
         const {form} = this.props;
 
-        return Promise.all([
-            new Promise((resolve, reject) => {
-                form.validateFieldsAndScroll((err, values) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(values)
-                    }
-                });
-            }),
-            new Promise((resolve, reject) => {
-                this.fieldsTableForm.validateFieldsAndScroll((err, values) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(values);
-                    }
-                });
-            }),
-            new Promise((resolve, reject) => {
-                this.queryItemsTableForm.validateFieldsAndScroll((err, values) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(values);
-                    }
-                });
-            }),
-        ]).then(([listPage]) => listPage);
+        const promises = [
+            form,
+            this.fieldsTableForm,
+            this.queryItemsTableForm,
+            this.toolItemsTableForm,
+            this.bottomToolItemsTableForm,
+        ].map(item => new Promise((resolve, reject) => {
+            item.validateFieldsAndScroll((err, values) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(values)
+                }
+            });
+        }));
+
+        return Promise.all(promises).then(([listPage]) => listPage);
     };
 
     render() {
@@ -443,6 +688,26 @@ export default class ListPage extends Component {
                         title={() => '查询条件：'}
                         columns={this.queryItemsColumns}
                         newRecord={{id: uuid(), field: '', label: '', type: 'input'}}
+                    />
+                )}
+
+                {getFieldDecorator('toolItems')(
+                    <EditableTable
+                        formRef={form => this.toolItemsTableForm = form}
+                        hasError={getFieldError('toolItems')}
+                        title={() => '顶部工具条：'}
+                        columns={this.toolItemsColumns}
+                        newRecord={{id: uuid(), type: '', text: '', icon: void 0}}
+                    />
+                )}
+
+                {getFieldDecorator('bottomToolItems')(
+                    <EditableTable
+                        formRef={form => this.bottomToolItemsTableForm = form}
+                        hasError={getFieldError('bottomToolItems')}
+                        title={() => '底部工具条：'}
+                        columns={this.bottomToolItemsColumns}
+                        newRecord={{id: uuid(), type: '', text: '', icon: void 0}}
                     />
                 )}
                 <div style={{marginTop: '16px'}}>

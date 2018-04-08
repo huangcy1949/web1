@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
 import {Form, Input, Button} from 'antd';
 import {FormItemLayout} from 'sx-antd';
-import PageContent from '<%= fileLevel%>layouts/page-content';
-import {connect} from '<%= fileLevel%>models';
+import PageContent from '../../../layouts/page-content';
+import {connect} from '../../../models';
 
-export const PAGE_ROUTE = '<%= routePath %>';
+export const PAGE_ROUTE = '/user-center/+edit/:id';
 
 @connect(state => ({
-    data: state.<%= lowercaseName %>.data,
-    fetchingData: state.<%= lowercaseName %>.fetchingData,
+    data: state.userCenter.data,
+    fetchingData: state.userCenter.fetchingData,
 }))
 @Form.create()
-export default class <%= capitalName %>Edit extends Component {
+export default class UserCenterEdit extends Component {
     state = {
         isAdd: true,
     };
@@ -23,23 +23,23 @@ export default class <%= capitalName %>Edit extends Component {
             this.setState({isAdd: true});
         } else {
             this.setState({isAdd: false});
-            this.props.action.<%= lowercaseName %>.getById({params: {id}});
+            this.props.action.userCenter.getById({params: {id}});
         }
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
         const {isAdd} = this.state;
-        const {form, action: {<%= lowercaseName %>}, history, fetchingData} = this.props;
+        const {form, action: {userCenter}, history, fetchingData} = this.props;
 
         if (fetchingData) return;
 
         form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                const submitAjax = isAdd ? <%= lowercaseName %>.save : <%= lowercaseName %>.update;
+                const submitAjax = isAdd ? userCenter.save : userCenter.update;
                 const successTip = isAdd ? '添加成功' : '修改成功';
 
-                submitAjax({params: values, successTip, onResolve: () => history.push('<%= listPageRoutePath %>')});
+                submitAjax({params: values, successTip, onResolve: () => history.push('/user-center')});
             }
         });
     };
@@ -51,7 +51,7 @@ export default class <%= capitalName %>Edit extends Component {
     render() {
         const {form: {getFieldDecorator}, fetchingData, data} = this.props;
         const {isAdd} = this.state;
-        const title = isAdd ? '添加<%= chineseName %>' : '修改<%= chineseName %>';
+        const title = isAdd ? '添加用户中心' : '修改用户中心';
 
         const labelSpaceCount = 4;
 
@@ -60,22 +60,37 @@ export default class <%= capitalName %>Edit extends Component {
                 <h1 style={{textAlign: 'center'}}>{title}</h1>
                 <Form onSubmit={this.handleSubmit}>
                     {!isAdd ? getFieldDecorator('id', {initialValue: data.id})(<Input type="hidden"/>) : null}
-<% for (let i = 0;i<fields.length;i++){%>
+
                     <FormItemLayout
-                        label="<%= fields[i].title%>"
+                        label="用户名"
                         labelSpaceCount={labelSpaceCount}
                         width={300}
                     >
-                        {getFieldDecorator('<%= fields[i].dataIndex%>', {
-                            initialValue: data.<%= fields[i].dataIndex%>,
+                        {getFieldDecorator('name', {
+                            initialValue: data.name,
                             rules: [
-                                {required: true, message: '请输入<%= fields[i].title%>！'},
+                                {required: true, message: '请输入用户名！'},
                             ],
                         })(
-                            <Input placeholder="请输入<%= fields[i].title%>"/>
+                            <Input placeholder="请输入用户名"/>
                         )}
                     </FormItemLayout>
-<%}%>
+
+                    <FormItemLayout
+                        label="年龄"
+                        labelSpaceCount={labelSpaceCount}
+                        width={300}
+                    >
+                        {getFieldDecorator('age', {
+                            initialValue: data.age,
+                            rules: [
+                                {required: true, message: '请输入年龄！'},
+                            ],
+                        })(
+                            <Input placeholder="请输入年龄"/>
+                        )}
+                    </FormItemLayout>
+
                     <FormItemLayout
                         labelSpaceCount={labelSpaceCount}
                     >

@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import {Button} from 'antd';
-import {Operator, ListPage} from 'sx-antd';
-import {hasPermission} from '../../commons';
-import FixBottom from '../../layouts/fix-bottom';
-import PageContent from '../../layouts/page-content';
-import {connect} from '../../models';
+import {Operator, ListPage, ToolItem} from 'sx-antd';
+import {hasPermission} from '<%= fileLevel%>commons';
+import FixBottom from '<%= fileLevel%>layouts/fix-bottom';
+import PageContent from '<%= fileLevel%>layouts/page-content';
+import {connect} from '<%= fileLevel%>models';
 
 export const PAGE_ROUTE = '<%= routePath %>';
 
@@ -14,7 +13,11 @@ export const PAGE_ROUTE = '<%= routePath %>';
     loading: state.<%= lowercaseName %>.loading,
 }))
 export default class <%= capitalName %>List extends Component {
-    state = {};<%if(queryItems && queryItems.length){%>
+    state = {
+        params: {
+            pageNum: 1,
+        },
+    };<%if(queryItems && queryItems.length){%>
 
     // TODO 查询条件
     queryItems = [
@@ -28,20 +31,33 @@ export default class <%= capitalName %>List extends Component {
                 placeholder: '请输入<%= queryItems[i].label%>',
             },<%}%>
         ],
-    ];<%}%>
+    ];<%}%><%if(toolItems && toolItems.length){%>
 
-    // TODO 工具条
-    toolItems = [
+    // TODO 顶部工具条
+    toolItems = [<% for (let i = 0;i<toolItems.length;i++){%>
         {
-            type: 'primary',
-            text: '添加',
-            icon: 'fa-plus',
-            visible: hasPermission('<%= permissionPrefix %>_ADD'),
+            type: '<%= toolItems[i].type%>',
+            text: '<%= toolItems[i].text%>',
+            icon: '<%= toolItems[i].icon%>',<%if(toolItems[i].permission){%>
+            visible: hasPermission('<%= permissionPrefix %>_<%= toolItems[i].permission%>'),<%}%>
             onClick: () => {
-                this.props.router.push('/<%= pluralityName %>/+edit/:id');
+                // TODO
             },
-        },
-    ];
+        },<%}%>
+    ];<%}%><%if(bottomToolItems && bottomToolItems.length){%>
+
+    // TODO 底部工具条
+    bottomToolItems = [<% for (let i = 0;i<bottomToolItems.length;i++){%>
+        {
+            type: '<%= bottomToolItems[i].type%>',
+            text: '<%= bottomToolItems[i].text%>',
+            icon: '<%= bottomToolItems[i].icon%>',<%if(bottomToolItems[i].permission){%>
+            visible: hasPermission('<%= permissionPrefix %>_<%= bottomToolItems[i].permission%>'),<%}%>
+            onClick: () => {
+                // TODO
+            },
+        },<%}%>
+    ];<%}%>
 
     columns = [<% for (let i = 0;i<fields.length;i++){%>
         {title: '<%= fields[i].title%>', dataIndex: '<%= fields[i].dataIndex%>'},<%}%>
@@ -49,23 +65,23 @@ export default class <%= capitalName %>List extends Component {
             title: '操作',
             key: 'operator',
             render: (text, record) => {
-                const {id, name} = record;
-                const successTip = `删除“${name}”成功！`;
+                const {id, <%= fields[0].dataIndex%>} = record;
+                const successTip = `删除“${<%= fields[0].dataIndex%>}”成功！`;
                 const items = [
                     {
                         label: '修改',
                         visible: hasPermission('<%= permissionPrefix %>_UPDATE'),
                         onClick: () => {
-                            this.props.router.push(`/<%= pluralityName %>/+edit/${id}`);
+                            this.props.history.push(`<%= editPageRoutePath.replace(':id', '${id}') %>`);
                         },
                     },
                     {
                         label: '删除',
                         visible: hasPermission('<%= permissionPrefix %>_DELETE'),
                         confirm: {
-                            title: `您确定要删除“${name}”？`,
+                            title: `您确定要删除“${<%= fields[0].dataIndex%>}”？`,
                             onConfirm: () => {
-                                this.props.actions.<%= lowercaseName %>.deleteById({params: {id}, successTip});
+                                this.props.action.<%= lowercaseName %>.deleteById({params: {id}, successTip});
                             },
                         },
                     },
@@ -89,25 +105,30 @@ export default class <%= capitalName %>List extends Component {
             dataSource,
             loading,
         } = this.props;
+        const {pageNum} = this.state.params;
 
         return (
             <PageContent>
                 <ListPage
-                    loading={loading}<%if(queryItems && queryItems.length){%>
-                    queryItems={this.queryItems}<%}%>
                     showSearchButton
-                    showResetButton={false}
-                    toolItems={this.toolItems}
-                    columns={this.columns}
-                    onSearch={this.handleSearch}
-                    dataSource={dataSource}
-                    rowKey={record => record._id}
+                    showResetButton={false}<%if(queryItems && queryItems.length){%>
+                    queryItems={this.queryItems}<%}%><%if(toolItems && toolItems.length){%>
+                    toolItems={this.toolItems}<%}%>
+                    onSearch={params => this.handleSearch({...params, pageNum: 1})}
                     total={total}
-                />
+                    pageNum={pageNum}
+                    onPageNumChange={pn => this.handleSearch({pageNum: pn})}
+                    tableProps={{
+                        loading,
+                        columns: this.columns,
+                        dataSource,
+                        // TODO 这个rowKey未必正确
+                        rowKey: record => record.id,
+                    }}
+                /><%if(bottomToolItems && bottomToolItems.length){%>
                 <FixBottom right>
-                    <Button type="danger">批量删除</Button>
-                    <Button type="primary">导出</Button>
-                </FixBottom>
+                    <ToolItem items={this.bottomToolItems}/>
+                </FixBottom><%}%>
             </PageContent>
         );
     }

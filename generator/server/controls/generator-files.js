@@ -2,25 +2,64 @@ const path = require('path');
 const fs = require('fs');
 const {walkDir, generateFile, getFileContent} = require('../utils');
 
+function getFileLevel(filePath) {
+    const src = '/src/'; // FIXME 这里是硬编码
+
+    if (!filePath) return './';
+
+    const filePaths = filePath.split(src);
+
+    if (filePaths.length < 2) return './';
+
+    const length = filePaths[1].split('/').length - 1;
+
+    const levels = [];
+    for (let i = 0; i < length; i++) {
+        levels.push('../');
+    }
+    return levels.join('');
+}
+
 module.exports = {
     generatorFiles(req, res, next) {
-        const {baseInfo, listPage} = req.body;
+        const {baseInfo, listPage, editPage, listEditModel} = req.body;
         const generates = [];
 
         if (listPage) {
-            listPage.outPutFile = path.resolve(listPage.outPutDir, listPage.outPutFile);
+            const outPutFile = path.resolve(listPage.outPutDir, listPage.outPutFile);
+            const fileLevel = getFileLevel(outPutFile);
             const config = {
-                fields: [                           // 字段配置
-                    {title: '用户名', dataIndex: 'name'},
-                    {title: '性别', dataIndex: 'gender'},
-                    {title: '年龄', dataIndex: 'age'},
-                    {title: '工作', dataIndex: 'job'},
-                ],
-                queryItems: [],
-                toolItems: [],
-
                 ...baseInfo,
                 ...listPage,
+                outPutFile,
+                fileLevel,
+                editPageRoutePath: editPage ? editPage.routePath : `${listPage.routePath}/+edit`,
+            };
+            generates.push(generateFile(config));
+        }
+
+        if (editPage) {
+            const outPutFile = path.resolve(editPage.outPutDir, editPage.outPutFile);
+            const fileLevel = getFileLevel(outPutFile);
+            const config = {
+                ...baseInfo,
+                ...editPage,
+                outPutFile,
+                fileLevel,
+                listPageRoutePath: listPage ? listPage.routePath : `/${baseInfo.name}`
+            };
+            generates.push(generateFile(config));
+        }
+
+        if (listEditModel) {
+            const outPutFile = path.resolve(listEditModel.outPutDir, listEditModel.outPutFile);
+            const fileLevel = getFileLevel(outPutFile);
+
+            const config = {
+                ...listEditModel,
+                ajaxUrl: listPage ? listPage.ajaxUrl : editPage.ajaxUrl,
+                outPutFile,
+                fileLevel,
             };
             generates.push(generateFile(config));
         }
@@ -33,14 +72,21 @@ module.exports = {
     getFileContent(req, res, next) {
         const {baseInfo, pageInfo} = req.body;
         const outPutFile = path.resolve(pageInfo.outPutDir, pageInfo.outPutFile);
+        const fileLevel = getFileLevel(outPutFile);
+
+        const editPageRoutePath = `${pageInfo.routePath}/+edit`;
+        const listPageRoutePath = `/${baseInfo.name}`;
+        const ajaxUrl = `/${baseInfo.name}`;
 
         const config = {
-            queryItems: [],
-            toolItems: [],
-
             ...baseInfo,
             ...pageInfo,
             outPutFile,
+            fileLevel,
+
+            editPageRoutePath,
+            listPageRoutePath,
+            ajaxUrl,
         };
 
         getFileContent(config)

@@ -9001,9 +9001,9 @@ sx-antd@^1.0.3:
   version "1.0.3"
   resolved "http://172.16.132.188:4873/sx-antd/-/sx-antd-1.0.3.tgz#42c27036dedfd20ffed1dc9e5e8c086e896c0850"
 
-sx-build@^1.0.1:
-  version "1.0.1"
-  resolved "http://172.16.132.188:4873/sx-build/-/sx-build-1.0.1.tgz#0cce27fce132e0863261acbf258c5b69008c48e3"
+sx-build@^1.0.2:
+  version "1.0.2"
+  resolved "http://172.16.132.188:4873/sx-build/-/sx-build-1.0.2.tgz#379e7b1eec8eabf9f9bf177f8d55c575ad2971fb"
   dependencies:
     atool-monitor "^0.4.3"
     autoprefixer "^7.1.1"
@@ -9083,9 +9083,9 @@ sx-build@^1.0.1:
     webpack-visualizer-plugin "^0.1.6"
     yargs "^8.0.1"
 
-sx-redux@^1.0.0:
-  version "1.0.0"
-  resolved "http://172.16.132.188:4873/sx-redux/-/sx-redux-1.0.0.tgz#440a90a4fc737e646fcda6390731eb73b1402e47"
+sx-redux@^1.0.1:
+  version "1.0.1"
+  resolved "http://172.16.132.188:4873/sx-redux/-/sx-redux-1.0.1.tgz#cd0ba1b43012ea6e888b11a7166a415367298a80"
   dependencies:
     flux-standard-action "^2.0.0"
     lodash "^4.17.4"

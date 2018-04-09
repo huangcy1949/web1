@@ -227,6 +227,7 @@ export default class Home extends Component {
 
         return (
             <PageContent>
+                <h1>管理系统增删改查页面生成</h1>
                 <Card
                     title="基础命名"
                     style={cardStyle}

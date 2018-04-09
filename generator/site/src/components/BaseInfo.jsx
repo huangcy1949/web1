@@ -70,7 +70,6 @@ export default class BaseInfo extends Component {
             capitalName,
             allCapitalName,
             pluralityName,
-            permissionPrefix: allCapitalName,
         });
     };
 
@@ -179,11 +178,7 @@ export default class BaseInfo extends Component {
                             labelSpaceCount={labelSpaceCount}
                             tipWidth={tipWidth}
                         >
-                            {getFieldDecorator('permissionPrefix', {
-                                rules: [
-                                    {required: true, message: '请输入权限前缀',},
-                                ],
-                            })(
+                            {getFieldDecorator('permissionPrefix')(
                                 <Input placeholder="请输入权限前缀"/>
                             )}
                         </FormItemLayout>

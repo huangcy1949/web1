@@ -7,7 +7,7 @@
         "precommit": "npm run lint-staged",
         "dev": "sx-build server",
         "start": "sx-build server",
-        "build": "cross-env NODE_ENV=production sx-build build && rimraf ../server/static && cp -r ./dist/ ../server/static",
+        "build": "cross-env NODE_ENV=production sx-build build && rimraf ../server/dist && cp -r ./dist/ ../server/dist",
         "site": "roadhog-api-doc static && gh-pages -d dist",
         "analyze": "sx-build build --analyze",
         "lint:style": "stylelint \"src/**/*.less\" --syntax less",

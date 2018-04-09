@@ -5,8 +5,8 @@ var path = require('path');
 var swig = require('swig');
 var routes = require('./routes');
 var siteRootPath = __dirname;
-var viewsPath = path.join(siteRootPath, 'static');
-var staticPath = path.join(siteRootPath, 'static');
+var viewsPath = path.join(siteRootPath, 'dist');
+var staticPath = path.join(siteRootPath, 'dist');
 
 // view engine setup
 app.set('views', viewsPath);

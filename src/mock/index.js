@@ -7,7 +7,8 @@ const mock = new MockAdapter(mockInstance);
 simplify(mock, [
     require('./mock-menu'),
     require('./mock-test-ajax'),
-    require('./mock-user')
+    require('./mock-user'),
+    require('./mock-user-center'),
 ]);
 
 

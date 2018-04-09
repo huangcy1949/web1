@@ -243,7 +243,7 @@ export default class Home extends Component {
                             onPreviewCode={this.handleListPagePreviewCode}
                         />
                     </Panel>
-                    <Panel {...this.getPanelProps('编辑页面', 'editPage')}>
+                    <Panel {...this.getPanelProps('编辑页', 'editPage')}>
                         <EditPage
                             validate={validate => this.validateEditPage = validate}
                             onPreviewCode={this.handleEditPagePreviewCode}

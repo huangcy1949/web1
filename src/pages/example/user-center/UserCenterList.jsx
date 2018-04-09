@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Operator, ListPage, ToolItem} from 'sx-antd';
-import {hasPermission} from '../../../commons';
+// import {hasPermission} from '../../../commons';
 import FixBottom from '../../../layouts/fix-bottom';
 import PageContent from '../../../layouts/page-content';
 import {connect} from '../../../models';
@@ -25,18 +25,18 @@ export default class UserCenterList extends Component {
             {
                 type: 'input',
                 field: 'name',
-                label: '用户名',
+                label: '姓名',
                 labelSpaceCount: 4,
                 width: 200,
-                placeholder: '请输入用户名',
+                placeholder: '请输入姓名',
             },
             {
                 type: 'input',
-                field: 'age',
-                label: '年龄',
+                field: 'email',
+                label: '邮箱',
                 labelSpaceCount: 4,
                 width: 200,
-                placeholder: '请输入年龄',
+                placeholder: '请输入邮箱',
             },
         ],
     ];
@@ -58,7 +58,7 @@ export default class UserCenterList extends Component {
         {
             type: 'primary',
             text: '导出',
-            icon: '',
+            icon: 'export',
             onClick: () => {
                 // TODO
             },
@@ -66,8 +66,13 @@ export default class UserCenterList extends Component {
     ];
 
     columns = [
-        {title: '用户名', dataIndex: 'name'},
-        {title: '年龄', dataIndex: 'age'},
+        {title: '姓名', dataIndex: 'name'},
+        {title: '登录名', dataIndex: 'loginName'},
+        {title: '邮箱', dataIndex: 'email'},
+        {title: '电话', dataIndex: 'mobile'},
+        {title: '性别', dataIndex: 'gender'},
+        {title: '职位', dataIndex: 'position'},
+        {title: '备注', dataIndex: 'remark'},
         {
             title: '操作',
             key: 'operator',
@@ -77,14 +82,14 @@ export default class UserCenterList extends Component {
                 const items = [
                     {
                         label: '修改',
-                        visible: hasPermission('USER_CENTER_UPDATE'),
+                        // visible: hasPermission('USER_CENTER_UPDATE'),
                         onClick: () => {
                             this.props.history.push(`/user-center/+edit/${id}`);
                         },
                     },
                     {
                         label: '删除',
-                        visible: hasPermission('USER_CENTER_DELETE'),
+                        // visible: hasPermission('USER_CENTER_DELETE'),
                         confirm: {
                             title: `您确定要删除“${name}”？`,
                             onConfirm: () => {

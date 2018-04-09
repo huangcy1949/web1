@@ -62,32 +62,107 @@ export default class UserCenterEdit extends Component {
                     {!isAdd ? getFieldDecorator('id', {initialValue: data.id})(<Input type="hidden"/>) : null}
 
                     <FormItemLayout
-                        label="用户名"
+                        label="姓名"
                         labelSpaceCount={labelSpaceCount}
                         width={300}
                     >
                         {getFieldDecorator('name', {
                             initialValue: data.name,
                             rules: [
-                                {required: true, message: '请输入用户名！'},
+                                {required: true, message: '请输入姓名！'},
                             ],
                         })(
-                            <Input placeholder="请输入用户名"/>
+                            <Input placeholder="请输入姓名"/>
                         )}
                     </FormItemLayout>
 
                     <FormItemLayout
-                        label="年龄"
+                        label="登录名"
                         labelSpaceCount={labelSpaceCount}
                         width={300}
                     >
-                        {getFieldDecorator('age', {
-                            initialValue: data.age,
+                        {getFieldDecorator('loginName', {
+                            initialValue: data.loginName,
                             rules: [
-                                {required: true, message: '请输入年龄！'},
+                                {required: true, message: '请输入登录名！'},
                             ],
                         })(
-                            <Input placeholder="请输入年龄"/>
+                            <Input placeholder="请输入登录名"/>
+                        )}
+                    </FormItemLayout>
+
+                    <FormItemLayout
+                        label="邮箱"
+                        labelSpaceCount={labelSpaceCount}
+                        width={300}
+                    >
+                        {getFieldDecorator('email', {
+                            initialValue: data.email,
+                            rules: [
+                                {required: true, message: '请输入邮箱！'},
+                            ],
+                        })(
+                            <Input placeholder="请输入邮箱"/>
+                        )}
+                    </FormItemLayout>
+
+                    <FormItemLayout
+                        label="电话"
+                        labelSpaceCount={labelSpaceCount}
+                        width={300}
+                    >
+                        {getFieldDecorator('mobile', {
+                            initialValue: data.mobile,
+                            rules: [
+                                {required: true, message: '请输入电话！'},
+                            ],
+                        })(
+                            <Input placeholder="请输入电话"/>
+                        )}
+                    </FormItemLayout>
+
+                    <FormItemLayout
+                        label="性别"
+                        labelSpaceCount={labelSpaceCount}
+                        width={300}
+                    >
+                        {getFieldDecorator('gender', {
+                            initialValue: data.gender,
+                            rules: [
+                                {required: true, message: '请输入性别！'},
+                            ],
+                        })(
+                            <Input placeholder="请输入性别"/>
+                        )}
+                    </FormItemLayout>
+
+                    <FormItemLayout
+                        label="职位"
+                        labelSpaceCount={labelSpaceCount}
+                        width={300}
+                    >
+                        {getFieldDecorator('position', {
+                            initialValue: data.position,
+                            rules: [
+                                {required: true, message: '请输入职位！'},
+                            ],
+                        })(
+                            <Input placeholder="请输入职位"/>
+                        )}
+                    </FormItemLayout>
+
+                    <FormItemLayout
+                        label="备注"
+                        labelSpaceCount={labelSpaceCount}
+                        width={300}
+                    >
+                        {getFieldDecorator('remark', {
+                            initialValue: data.remark,
+                            rules: [
+                                {required: true, message: '请输入备注！'},
+                            ],
+                        })(
+                            <Input placeholder="请输入备注"/>
                         )}
                     </FormItemLayout>
 

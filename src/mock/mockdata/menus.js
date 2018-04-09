@@ -6,6 +6,7 @@ export default [
 
     {key: 'example', text: 'Example', icon: 'fa-file-code-o', path: ''},
 
+    {key: 'user-center', parentKey: 'example', text: '用户中心', icon: 'user', path: '/user-center', order: 10011},
     {key: 'animation-table', parentKey: 'example', text: '表格', icon: 'table', path: '/example/zk-table'},
     {key: 'table-drag-column', parentKey: 'example', text: '表头可拖拽', icon: 'table', path: '/example/table-drag-column'},
     {key: 'table-drag-row', parentKey: 'example', text: '行拖拽排序', icon: 'table', path: '/example/table-drag-row'},

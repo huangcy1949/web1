@@ -346,7 +346,6 @@ export default class ListPage extends Component {
             width: '20%',
             props: {
                 decorator: {
-                    initialValue: 'plus',
                     rules: [
                         {required: false, message: '请选择图标'},
                     ],
@@ -456,7 +455,6 @@ export default class ListPage extends Component {
             width: '20%',
             props: {
                 decorator: {
-                    initialValue: 'plus',
                     rules: [
                         {required: false, message: '请选择图标'},
                     ],

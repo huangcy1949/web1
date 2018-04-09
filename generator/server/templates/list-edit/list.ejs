@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Operator, ListPage, ToolItem} from 'sx-antd';
-import {hasPermission} from '<%= fileLevel%>commons';
+// import {hasPermission} from '<%= fileLevel%>commons';
 import FixBottom from '<%= fileLevel%>layouts/fix-bottom';
 import PageContent from '<%= fileLevel%>layouts/page-content';
 import {connect} from '<%= fileLevel%>models';
@@ -70,14 +70,14 @@ export default class <%= capitalName %>List extends Component {
                 const items = [
                     {
                         label: '修改',
-                        visible: hasPermission('<%= permissionPrefix %>_UPDATE'),
+                        // visible: hasPermission('<%= permissionPrefix %>_UPDATE'),
                         onClick: () => {
                             this.props.history.push(`<%= editPageRoutePath.replace(':id', '${id}') %>`);
                         },
                     },
                     {
                         label: '删除',
-                        visible: hasPermission('<%= permissionPrefix %>_DELETE'),
+                        // visible: hasPermission('<%= permissionPrefix %>_DELETE'),
                         confirm: {
                             title: `您确定要删除“${<%= fields[0].dataIndex%>}”？`,
                             onConfirm: () => {

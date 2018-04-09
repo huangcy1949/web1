@@ -43,7 +43,7 @@ export default {
     },
 
     getById: {
-        payload: ({params, options}) => ajax.get('/user-center', params, options),
+        payload: ({params, options}) => ajax.get(`/user-center/${params.id}`, params, options),
         reducer: {
             pending: () => ({fetchingData: true}),
             resolve: (state, {payload = {}}) => ({data: payload}),

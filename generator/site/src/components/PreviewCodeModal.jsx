@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Modal, Button, notification} from 'antd';
+import uuid from 'uuid/v4';
 import ClipboardJS from 'clipboard';
 import Highlight from 'react-highlight'
 import 'highlight.js/styles/github.css';
@@ -20,12 +21,14 @@ export default class PreviewCodeModal extends Component {
     };
     state = {};
 
+    contentId = `content-id-${uuid()}`;
+
     componentDidMount() {
-        const clipboard = new ClipboardJS('.js-preview-code-btn');
+        const clipboard = new ClipboardJS(this.btn);
         clipboard.on('success', function (e) {
             notification.success({
                 message: '成功！',
-                description: '复制到粘贴板成功！',
+                description: '成功复制到粘贴板！',
             });
             e.clearSelection();
         });
@@ -33,7 +36,7 @@ export default class PreviewCodeModal extends Component {
         clipboard.on('error', function (e) {
             notification.error({
                 message: '失败！',
-                description: '复制到粘贴板失败！',
+                description: '未能复制到粘贴板！',
             });
             console.error('Action:', e.action);
             console.error('Trigger:', e.trigger);
@@ -58,19 +61,23 @@ export default class PreviewCodeModal extends Component {
                 onCancel={onCancel}
                 onOk={onOk}
             >
-                <textarea
-                    style={{position: 'absolute', right: -1000}}
-                    id="js-code-content"
-                    defaultValue={code}
-                />
+                 <textarea
+                     style={{position: 'fixed', right: -1000}}
+                     id={this.contentId}
+                     defaultValue={code}
+                 />
 
-                <Button
-                    style={{marginBottom: 8}}
-                    className="js-preview-code-btn"
-                    data-clipboard-target="#js-code-content"
-                    size="small"
-                >复制</Button>
-
+                <div
+                    ref={node => this.btn = node}
+                    data-clipboard-target={`#${this.contentId}`}
+                >
+                    <Button
+                        style={{marginBottom: 8}}
+                        className="js-preview-code-btn"
+                        data-clipboard-target="#js-code-content"
+                        size="small"
+                    >复制</Button>
+                </div>
                 <Highlight>{code}</Highlight>
             </Modal>
         );

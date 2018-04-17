@@ -58,7 +58,7 @@
         "react-router-dom": "^4.2.2",
         "rmc-feedback": "^1.0.4",
         "sx-ajax": "^1.0.0",
-        "sx-antd": "^3.0.0",
+        "sx-antd": "^3.0.1",
         "sx-build": "^1.0.1",
         "sx-redux": "^1.0.0",
         "sx-utils": "^1.0.0",

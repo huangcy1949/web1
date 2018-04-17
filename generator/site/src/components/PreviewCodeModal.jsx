@@ -23,23 +23,29 @@ export default class PreviewCodeModal extends Component {
 
     contentId = `content-id-${uuid()}`;
 
-    componentDidMount() {
-        const clipboard = new ClipboardJS(this.btn);
-        clipboard.on('success', function (e) {
-            notification.success({
-                message: '成功！',
-                description: '成功复制到粘贴板！',
-            });
-            e.clearSelection();
-        });
+    initClipboard = () => {
+        if (this.clipboardInit) return;
+        setTimeout(() => {
+            if (this.btn) {
+                this.clipboardInit = true;
+                const clipboard = new ClipboardJS(this.btn);
+                clipboard.on('success', function (e) {
+                    notification.success({
+                        message: '成功！',
+                        description: '成功复制到粘贴板！',
+                    });
+                    e.clearSelection();
+                });
 
-        clipboard.on('error', function (e) {
-            notification.error({
-                message: '失败！',
-                description: '未能复制到粘贴板！',
-            });
-            console.error('Action:', e.action);
-            console.error('Trigger:', e.trigger);
+                clipboard.on('error', function (e) {
+                    notification.error({
+                        message: '失败！',
+                        description: '未能复制到粘贴板！',
+                    });
+                    console.error('Action:', e.action);
+                    console.error('Trigger:', e.trigger);
+                });
+            }
         });
     };
 
@@ -51,6 +57,8 @@ export default class PreviewCodeModal extends Component {
             code,
             width,
         } = this.props;
+
+        this.initClipboard();
 
         return (
             <Modal
@@ -68,6 +76,7 @@ export default class PreviewCodeModal extends Component {
                  />
 
                 <div
+                    style={{display: 'inline-block'}}
                     ref={node => this.btn = node}
                     data-clipboard-target={`#${this.contentId}`}
                 >

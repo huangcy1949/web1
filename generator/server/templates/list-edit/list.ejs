@@ -13,11 +13,7 @@ export const PAGE_ROUTE = '<%= routePath %>';
     loading: state.<%= lowercaseName %>.loading,
 }))
 export default class <%= capitalName %>List extends Component {
-    state = {
-        params: {
-            pageNum: 1,
-        },
-    };<%if(queryItems && queryItems.length){%>
+<%if(queryItems && queryItems.length){%>
 
     // TODO 查询条件
     queryItems = [
@@ -93,9 +89,6 @@ export default class <%= capitalName %>List extends Component {
     ];
 
     handleSearch = (params) => {
-        params = {...this.state.params, ...params};
-        this.setState({params});
-
         this.props.action.<%= lowercaseName %>.getByPage({params});
     };
 
@@ -105,7 +98,6 @@ export default class <%= capitalName %>List extends Component {
             dataSource,
             loading,
         } = this.props;
-        const {pageNum} = this.state.params;
 
         return (
             <PageContent>
@@ -114,10 +106,8 @@ export default class <%= capitalName %>List extends Component {
                     showResetButton={false}<%if(queryItems && queryItems.length){%>
                     queryItems={this.queryItems}<%}%><%if(toolItems && toolItems.length){%>
                     toolItems={this.toolItems}<%}%>
-                    onSearch={params => this.handleSearch({...params, pageNum: 1})}
+                    onSearch={this.handleSearch}
                     total={total}
-                    pageNum={pageNum}
-                    onPageNumChange={pn => this.handleSearch({pageNum: pn})}
                     tableProps={{
                         loading,
                         columns: this.columns,

@@ -6,6 +6,8 @@ import './style.less'
 export default class Home extends Component {
     componentWillMount() {
         console.log(this.props.loginUser);
+
+        /*
         // home 直接跳转 到系统第一个可用菜单页面
         const {menus} = this.props;
         if (menus && menus.length) {
@@ -22,11 +24,14 @@ export default class Home extends Component {
                 this.props.history.replace(path);
             }
         }
+        * */
     }
 
     render() {
         return (
-            <div/>
+            <div>
+                <h1 style={{textAlign: 'center', marginTop: 200}}>首页</h1>
+            </div>
         );
     }
 }

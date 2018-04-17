@@ -8965,9 +8965,9 @@ sx-ajax@^1.0.0:
     axios "^0.17.1"
     qs "^6.5.0"
 
-sx-antd@^2.0.0:
-  version "2.0.0"
-  resolved "http://172.16.132.188:4873/sx-antd/-/sx-antd-2.0.0.tgz#be0c163d3c6470bd70be9a3299792f6bf87c678d"
+sx-antd@^3.0.0:
+  version "3.0.0"
+  resolved "http://172.16.132.188:4873/sx-antd/-/sx-antd-3.0.0.tgz#9f1d1cb54acfd6c8a18838681bea1b6a82563598"
 
 sx-build@^1.0.1:
   version "1.0.1"

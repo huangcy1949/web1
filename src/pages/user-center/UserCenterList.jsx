@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {Operator, ListPage} from 'sx-antd';
-import PageContent from '../../../layouts/page-content';
-import {connect} from '../../../models';
+import {Operator, ListPage, ToolItem} from 'sx-antd';
+import FixBottom from '../../layouts/fix-bottom';
+import PageContent from '../../layouts/page-content';
+import {connect} from '../../models';
 
 export const PAGE_ROUTE = '/user-center';
 
@@ -11,11 +12,7 @@ export const PAGE_ROUTE = '/user-center';
     loading: state.userCenter.loading,
 }))
 export default class UserCenterList extends Component {
-    state = {
-        params: {
-            pageNum: 1,
-        },
-    };
+
 
     // TODO 查询条件
     queryItems = [
@@ -23,16 +20,58 @@ export default class UserCenterList extends Component {
             {
                 type: 'input',
                 field: 'name',
-                label: '用户名',
+                label: '姓名',
                 labelSpaceCount: 4,
                 width: 200,
-                placeholder: '请输入用户名',
+                placeholder: '请输入姓名',
+            },
+            {
+                type: 'input',
+                field: 'age',
+                label: '年龄',
+                labelSpaceCount: 4,
+                width: 200,
+                placeholder: '请输入年龄',
+            },
+            {
+                type: 'input',
+                field: 'job',
+                label: '工作',
+                labelSpaceCount: 4,
+                width: 200,
+                placeholder: '请输入工作',
             },
         ],
     ];
 
+    // TODO 顶部工具条
+    toolItems = [
+        {
+            type: 'primary',
+            text: '添加',
+            icon: 'plus',
+            onClick: () => {
+                // TODO
+            },
+        },
+    ];
+
+    // TODO 底部工具条
+    bottomToolItems = [
+        {
+            type: 'primary',
+            text: '导出',
+            icon: 'export',
+            onClick: () => {
+                // TODO
+            },
+        },
+    ];
+
     columns = [
-        {title: '用户名', dataIndex: 'name'},
+        {title: '姓名', dataIndex: 'name'},
+        {title: '年龄', dataIndex: 'age'},
+        {title: '工作', dataIndex: 'job'},
         {
             title: '操作',
             key: 'operator',
@@ -63,9 +102,6 @@ export default class UserCenterList extends Component {
     ];
 
     handleSearch = (params) => {
-        params = {...this.state.params, ...params};
-        this.setState({params});
-
         this.props.action.userCenter.getByPage({params});
     };
 
@@ -75,7 +111,6 @@ export default class UserCenterList extends Component {
             dataSource,
             loading,
         } = this.props;
-        const {pageNum} = this.state.params;
 
         return (
             <PageContent>
@@ -83,10 +118,9 @@ export default class UserCenterList extends Component {
                     showSearchButton
                     showResetButton={false}
                     queryItems={this.queryItems}
-                    onSearch={params => this.handleSearch({...params, pageNum: 1})}
+                    toolItems={this.toolItems}
+                    onSearch={this.handleSearch}
                     total={total}
-                    pageNum={pageNum}
-                    onPageNumChange={pn => this.handleSearch({pageNum: pn})}
                     tableProps={{
                         loading,
                         columns: this.columns,
@@ -95,6 +129,9 @@ export default class UserCenterList extends Component {
                         rowKey: record => record.id,
                     }}
                 />
+                <FixBottom right>
+                    <ToolItem items={this.bottomToolItems}/>
+                </FixBottom>
             </PageContent>
         );
     }

@@ -1,17 +1,18 @@
 # 基础框架
 
-提供了三种框架布局
+## 导航布局说明
 
-```
-// router/Router.jsx
-<PageFrame layout="top-side-menu" {...props}/>;
-```
+用户可以设置页面进行修改
 
+开发人员可以修改 `models/settings.js` 中 pageFrameLayout 初始值，来指定默认布局方式。
+
+目前提供三种布局，如下：
 1. side-menu: 只有左侧菜单
 1. top-menu: 只有顶部菜单
 1. top-side-menu: 头部菜单和左侧菜单
 
 ## 特性
+相关方法已经封装到action中，代码在相应得models中
 
 1. 头部固定
 1. 菜单固定

@@ -52,6 +52,7 @@ export default class UserCenterList extends Component {
             icon: 'plus',
             onClick: () => {
                 // TODO
+                this.props.history.push('/user-center/+edit/:id');
             },
         },
     ];

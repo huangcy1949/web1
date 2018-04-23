@@ -13,7 +13,7 @@ export default {
     },
 
     getByPage: {
-        payload: ({params, options}) => ajax.get('/user-center', params, options),
+        payload: ({params, options}) => ajax.get('/mock/user-center', params, options),
         reducer: {
             pending: () => ({loading: true}),
             resolve: (state, {payload = {}}) => {
@@ -28,7 +28,7 @@ export default {
     },
 
     deleteById: {
-        payload: ({params, options}) => ajax.del(`/user-center/${params.id}`, null, options),
+        payload: ({params, options}) => ajax.del(`/mock/user-center/${params.id}`, null, options),
         reducer: {
             padding: () => ({deleting: true}),
             resolve: (state, {payload = ''}) => {
@@ -43,7 +43,7 @@ export default {
     },
 
     getById: {
-        payload: ({params, options}) => ajax.get(`/user-center/${params.id}`, params, options),
+        payload: ({params, options}) => ajax.get(`/mock/user-center/${params.id}`, params, options),
         reducer: {
             pending: () => ({fetchingData: true}),
             resolve: (state, {payload = {}}) => ({data: payload}),
@@ -52,7 +52,7 @@ export default {
     },
 
     save: {
-        payload: ({params, options}) => ajax.post('/user-center', params, options),
+        payload: ({params, options}) => ajax.post('/mock/user-center', params, options),
         reducer: {
             padding: () => ({saving: true}),
             complete: () => ({saving: false}),
@@ -60,7 +60,7 @@ export default {
     },
 
     update: {
-        payload: ({params, options}) => ajax.put('/user-center', params, options),
+        payload: ({params, options}) => ajax.put('/mock/user-center', params, options),
         reducer: {
             padding: () => ({updating: true}),
             complete: () => ({updating: false}),

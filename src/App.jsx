@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {LocaleProvider, Spin} from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
-import api from './api/api-hoc';
 import {
     setCurrentLoginUser,
     getCurrentLoginUser,
@@ -13,7 +12,6 @@ import {connect} from "./models";
 const currentLoginUser = getCurrentLoginUser();
 
 @connect()
-@api()
 export default class App extends Component {
     state = {
         loading: false,
@@ -46,19 +44,23 @@ export default class App extends Component {
         if (userId) {
             // 根据用户id查询用户菜单权限
             this.setState({loading: true});
-            this.props.api.system
-                .getMenus({userId})
-                .then(res => {
-                    let menus = res || [];
-                    const {menuTreeData, permissions} = getMenuTreeDataAndPermissions(menus);
-                    this.props.action.menu.setMenus(menuTreeData);
+            this.props.action.system
+                .getMenus({
+                    params: {userId},
+                    onResolve: (res) => {
+                        let menus = res || [];
+                        const {menuTreeData, permissions} = getMenuTreeDataAndPermissions(menus);
+                        this.props.action.menu.setMenus(menuTreeData);
 
-                    currentLoginUser.permissions = permissions;
-                    setCurrentLoginUser(currentLoginUser);
-                    this.props.action.global.setLoginUser(currentLoginUser);
-                    this.props.action.global.setPermissions(permissions);
+                        currentLoginUser.permissions = permissions;
+                        setCurrentLoginUser(currentLoginUser);
+                        this.props.action.global.setLoginUser(currentLoginUser);
+                        this.props.action.global.setPermissions(permissions);
+                    },
+                    onComplete: () => {
+                        this.setState({loading: false});
+                    },
                 })
-                .finally(() => this.setState({loading: false}));
         }
     }
 
@@ -66,7 +68,7 @@ export default class App extends Component {
         const {loading, hasError} = this.state;
         // TODO 完善崩溃页面
         if (hasError) {
-            return '页面崩溃了。。。（崩溃信息需要完善）';
+            return '页面崩溃了。。。';
         }
         return (
             <LocaleProvider locale={zhCN}>

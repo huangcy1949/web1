@@ -8969,9 +8969,9 @@ sx-antd@^3.0.1:
   version "3.0.1"
   resolved "http://172.16.132.188:4873/sx-antd/-/sx-antd-3.0.1.tgz#cf616f42d0bb70d3744cff9f820fde15c393a39f"
 
-sx-build@^1.0.1:
-  version "1.0.1"
-  resolved "http://172.16.132.188:4873/sx-build/-/sx-build-1.0.1.tgz#0cce27fce132e0863261acbf258c5b69008c48e3"
+sx-build@^1.0.5:
+  version "1.0.5"
+  resolved "http://172.16.132.188:4873/sx-build/-/sx-build-1.0.5.tgz#91c47cf7a77976d92aec7fa8dd73c10f17633cea"
   dependencies:
     atool-monitor "^0.4.3"
     autoprefixer "^7.1.1"

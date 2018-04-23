@@ -20,7 +20,6 @@ import PageFrame from '../layouts/frame';
 import IFrame from '../layouts/iframe'
 import AuthRoute from './AuthRoute';
 import {ajaxHoc} from '../commons/ajax';
-import service from '../api/api-hoc';
 import {isAuthenticated} from '../commons';
 
 const allRoutes = pageRoutes.concat(routes);
@@ -40,7 +39,7 @@ const renderBundle = (props) => (Com) => {
     NProgress.done();
 
     // 各种高阶函数包装，方便调用相关方法
-    Com = service()(ajaxHoc()(withRouter(connectComponent(Com))));
+    Com = ajaxHoc()(withRouter(connectComponent(Com)));
     return <Com {...props}/>;
 };
 

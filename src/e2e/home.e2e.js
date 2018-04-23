@@ -19,13 +19,4 @@ describe('Homepage', () => {
 
         expect(text).toContain('<h1>React Web</h1>');
     });
-    it('首页为分析页', async () => {
-        const text = await page
-            .wait('.no-print')
-            .wait(1000)
-            .evaluate(() => document.body.innerHTML)
-            .end();
-
-        expect(text).toContain('重新设置Title');
-    });
 });

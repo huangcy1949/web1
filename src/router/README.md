@@ -25,15 +25,16 @@ router.get('*', function (req, res, next) {
     res.render('index.html');
 });
 ```
+
 ## 404 页面
 前端处理404页面，所有没截获的path，都渲染Error404组件
 ```jsx
 // src/router/Router.jsx
 <Route component={Error404}/>
 ```
+
 ## 页面跳转
 页面跳转使用`Link`，或者`this.props.history`相关API，否则会跳出单页面应用;
-
 
 ```jsx harmony
 import {Link} from 'react-router';
@@ -77,14 +78,12 @@ export default class WorkSpace extends Component {
 ```
 
 ## 注入页面中的属性
-页面进行了一些包装`api()(ajax()(withRouter(connectComponent(Com))));`，注入了一些常用属性;
+页面进行了一些包装`withRouter(connectComponent(Com));`，注入了一些常用属性;
 
 在页面中，可以调用：
 
-- this.porps.ajax
-- this.props.api
-- this.porps.action
-- this.props.history
+- this.porps.action：对应各个model的方法，比如：`this.props.action.page.setTitle(...)`
+- this.props.history：常用`this.props.history.push('/some/path')`进行页面跳转
 
 注：非路由直接连接页面没有这些属性，需要使用相应的高阶组件进行包装
 

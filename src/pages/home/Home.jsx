@@ -2,10 +2,9 @@ import React, {Component} from 'react'
 import {connect} from "../../models/index";
 import './style.less'
 
-@connect(state => ({menus: state.menu.menus, loginUser: state.global.loginUser}))
+@connect(state => ({menus: state.menu.menus}))
 export default class Home extends Component {
     componentWillMount() {
-        console.log(this.props.loginUser);
 
         /*
         // home 直接跳转 到系统第一个可用菜单页面
@@ -29,8 +28,9 @@ export default class Home extends Component {
 
     render() {
         return (
-            <div>
-                <h1 style={{textAlign: 'center', marginTop: 200}}>首页</h1>
+            <div styleName="root">
+                <h1>首页</h1>
+                <p>欢迎使用 sx-admin 管理系统架构</p>
             </div>
         );
     }

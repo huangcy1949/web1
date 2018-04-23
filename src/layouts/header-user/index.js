@@ -3,16 +3,19 @@ import {Menu, Dropdown, Avatar, Icon} from 'antd';
 import {Link} from 'react-router-dom';
 import avatar from './avatar.svg';
 import {toLogin, getCurrentLoginUser} from '../../commons';
+import {connect} from '../../models';
 import './style.less';
 
 const Item = Menu.Item;
 
+@connect()
 export default class HeaderUser extends Component {
     static defaultProps = {
         theme: 'default',
     };
     handleMenuClick = ({key}) => {
         if (key === 'logout') {
+            this.props.action.system.logout();
             toLogin();
         }
     };

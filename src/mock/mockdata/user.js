@@ -48,6 +48,8 @@ export function getUsersByPageSize(pageSize) {
         users.push(Mock.mock({
             id: random.guid(),
             name: random.cname(),
+            'age|18-60': 1,
+            'job|1': ['程序员', '人事', '测试', '销售'],
             loginName: random.word(),
             email: random.email(),
             mobile: '18611438888',

@@ -3,10 +3,8 @@ import {Helmet} from 'react-helmet';
 import {Form, Icon, Input, Button} from 'antd';
 import {withRouter} from 'react-router-dom'
 import {setCurrentLoginUser} from '../../commons';
-import {ajaxHoc} from '../../commons/ajax';
+import {connect} from '../../models/index';
 import './style.less'
-
-const FormItem = Form.Item;
 
 function hasErrors(fieldsError) {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -14,7 +12,7 @@ function hasErrors(fieldsError) {
 
 @Form.create()
 @withRouter
-@ajaxHoc()
+@connect()
 export default class extends Component {
     state = {
         loading: false,
@@ -31,16 +29,21 @@ export default class extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 this.setState({loading: true, message: ''});
-                this.props.ajax.post('/mock/login', values, {errorTip: false})
-                    .then((res) => {
-                        setCurrentLoginUser(res);
-                        this.setState({loading: false});
 
-                        const lastHref = window.sessionStorage.getItem('last-href');
-                        window.location.href = lastHref || '/';
-                    })
-                    .catch(err => {
-                        this.setState({message: err.message, loading: false});
+                this.props.action.system
+                    .login({
+                        params: values,
+                        errorTip: false,
+                        onResolve: (res) => {
+                            setCurrentLoginUser(res);
+                            this.setState({loading: false});
+
+                            const lastHref = window.sessionStorage.getItem('last-href');
+                            window.location.href = lastHref || '/';
+                        },
+                        onReject: (err) => {
+                            this.setState({message: err.message, loading: false});
+                        },
                     });
             }
         });
@@ -61,7 +64,7 @@ export default class extends Component {
                 <div styleName="box">
                     <div styleName="header">USER LOGIN</div>
                     <Form onSubmit={this.handleSubmit}>
-                        <FormItem
+                        <Form.Item
                             validateStatus={userNameError ? 'error' : ''}
                             help={userNameError || ''}
                         >
@@ -70,8 +73,8 @@ export default class extends Component {
                             })(
                                 <Input autoFocus prefix={<Icon type="user" style={{fontSize: 13}}/>} placeholder="Username"/>
                             )}
-                        </FormItem>
-                        <FormItem
+                        </Form.Item>
+                        <Form.Item
                             validateStatus={passwordError ? 'error' : ''}
                             help={passwordError || ''}
                         >
@@ -80,7 +83,7 @@ export default class extends Component {
                             })(
                                 <Input prefix={<Icon type="lock" style={{fontSize: 13}}/>} type="password" placeholder="Password"/>
                             )}
-                        </FormItem>
+                        </Form.Item>
                         <Button
                             styleName="submit-btn"
                             loading={loading}

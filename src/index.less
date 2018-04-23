@@ -1,4 +1,8 @@
-html, body, :global(#root) {
+/*
+全局样式，不要轻易编写全局样式
+*/
+
+html, body, #root {
     height: 100%;
 }
 
@@ -8,24 +12,24 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-:global(.ant-notification) {
+.ant-notification {
     z-index: 9999;
 }
 
-:global(.ant-message) {
+.ant-message {
     z-index: 9999;
 }
 
-:global(.ant-menu-submenu-popup) {
+.ant-menu-submenu-popup {
     z-index: 9999;
 }
 
-:global(.just-print) {
-    display: none !important;
-}
-
-:global .ant-modal {
+.ant-modal {
     padding-bottom: 84px !important;
+}
+
+.just-print {
+    display: none !important;
 }
 
 @media print {
@@ -34,19 +38,19 @@ body {
         background: none;
     }
 
-    :global(.no-print) {
+    .no-print {
         display: none !important;
     }
 
-    :global(.just-print) {
+    .just-print {
         display: block !important;
     }
 
-    :global(.ant-message) {
+    .ant-message {
         display: none !important;
     }
 
-    :global(.ant-modal-mask) {
+    .ant-modal-mask {
         display: none !important;
     }
 }

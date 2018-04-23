@@ -18,12 +18,12 @@
 
 下载
 ```
-$ git clone http://192.168.120.68/root/suixingpay-fe-admin.git
+$ git clone http://192.168.120.68/root/suixingpay-fe-admin.git your-project-name
 ```
 
 安装依赖
 ```
-$ cd react-web-boilerplate
+$ cd your-project-name
 $ yarn
 ```
 
@@ -48,8 +48,7 @@ $ yarn build
     ├── mock        // mock数据
     ├── models      // redux 封装，模块，提供数据
     ├── pages       // 各个页面
-    ├── router      // 路由相关
-    └── services    // 服务    
+    └── router      // 路由相关
 ```
 
 ## 连接后端

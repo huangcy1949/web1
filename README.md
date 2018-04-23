@@ -1,20 +1,38 @@
 # suixingpay-fe-admin
 
-基于 react react-router@4 redux antd 的pc管理系统框架
+基于 
+[react@16](https://reactjs.org/)
+[react-router@4x](https://reacttraining.com/react-router/) 
+[redux@3x](http://redux.js.org/) 
+[antd@3x](https://ant.design/) 
+的pc管理系统框架
 
 ## 相关文档
 
 - [models(redux)](http://192.168.120.68/root/suixingpay-fe-admin/blob/master/src/models/README.md)
 - [layouts(布局)](http://192.168.120.68/root/suixingpay-fe-admin/blob/master/src/layouts/README.md)
 - [router(路由)](http://192.168.120.68/root/suixingpay-fe-admin/blob/master/src/router/README.md)
-- [api(后端接口)](http://192.168.120.68/root/suixingpay-fe-admin/blob/master/src/api/README.md)
 
 ## 依赖
-1. nodejs v8.1.3
+1. nodejs v9.10.0 必须9以上版本，推荐使用[nvm](https://github.com/creationix/nvm)管理node版本
 1. yarn v1.3.2
 1. 兼容windwos / mac / ubuntu
 
 ## 安装 & 启动
+
+需要切换成公司npm私服
+
+可以使用[nrm](https://github.com/Pana/nrm)管理npm registry
+
+```
+$ npm set registry http://172.16.132.188:4873/
+
+# if you use HTTPS, add an appropriate CA information
+# ("null" means get CA list from OS)
+$ npm set ca null
+
+$ yarn config set registry http://172.16.132.188:4873/
+```
 
 下载
 ```
@@ -36,19 +54,28 @@ $ yarn start
 ```
 $ yarn build
 ```
+
 ## 项目结构
 ```
 .
+├── dist            // 构建生成文件，用于发布
+├── generator       // 代码生成工具 
 ├── public          // 静态文件存放目录，不经过webpack打包但是项目中还用到的文件
-└── src
-    ├── commons     // 公共方法
-    ├── components  // 通用业务组件
-    ├── e2e         // 端对端测试
-    ├── layouts     // 布局
-    ├── mock        // mock数据
-    ├── models      // redux 封装，模块，提供数据
-    ├── pages       // 各个页面
-    └── router      // 路由相关
+├── src             // 项目源码目录，开发主要在这个目录下进行
+│   ├── commons     // 公共方法
+│   ├── components  // 通用业务组件
+│   ├── e2e         // 端对端测试
+│   ├── layouts     // 布局
+│   ├── mock        // mock数据
+│   ├── models      // redux 封装，模块，提供数据
+│   ├── pages       // 各个业务模块对应的页面
+│   ├── router      // 路由相关
+│   ├── App.jsx     // 项目入口组件
+│   ├── index.ejs   // 入口html模版文件
+│   ├── index.less  // 全局样式，不要轻易编写全局样式
+│   ├── polyfill.js // 项目中使用到的一些polyfill
+│   └── theme.js    // 主题变量
+└── tests           // 测试用的一些脚本
 ```
 
 ## 连接后端
@@ -97,7 +124,5 @@ server {
 
 - [ ] babel 升级到7 使用 [optional-chaining](https://www.npmjs.com/package/babel-plugin-transform-optional-chaining)简化取值判断;
 - [ ] 前端监控，异常捕获
-- [x] e2e 测试
-- [ ] 通用组件文档，生成antd文档的形式
 - [ ] 各个模块内部独立xxx.modal.js，通过脚本生成modal；
 - [ ] redux库重构，存储同步改成中间件、去掉page相关内容

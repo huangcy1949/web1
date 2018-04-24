@@ -13,7 +13,6 @@ export const PAGE_ROUTE = '/user-center';
 }))
 export default class UserCenterList extends Component {
 
-
     // TODO 查询条件
     queryItems = [
         [

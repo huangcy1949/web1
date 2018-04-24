@@ -1,4 +1,4 @@
-{
+module.exports = {
     "hash": true,
     "entry": "src/index.js",
     "extraBabelPlugins": [
@@ -49,7 +49,7 @@
     ],
 
     //
-    "modelIgnore" : [
+    "modelIgnore": [
         "**/index.js",
         "**/all-models.js"
     ],

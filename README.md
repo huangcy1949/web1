@@ -14,7 +14,7 @@
 - [router(路由)](http://192.168.120.68/root/suixingpay-fe-admin/blob/master/src/router/README.md)
 
 ## 依赖
-1. nodejs v9.10.0 必须9以上版本，推荐使用[nvm](https://github.com/creationix/nvm)管理node版本
+1. nodejs v8.10.0，推荐使用[nvm](https://github.com/creationix/nvm)管理node版本
 1. yarn v1.3.2
 1. 兼容windwos / mac / ubuntu
 
@@ -34,6 +34,8 @@ $ npm set ca null
 $ yarn config set registry http://172.16.132.188:4873/
 ```
 
+注：windows下，yarn 切换成公司私服后，导致安装依赖错误，请使用`npm install`代替
+
 下载
 ```
 $ git clone http://192.168.120.68/root/suixingpay-fe-admin.git your-project-name
@@ -43,16 +45,22 @@ $ git clone http://192.168.120.68/root/suixingpay-fe-admin.git your-project-name
 ```
 $ cd your-project-name
 $ yarn
+或
+$ npm install 
 ```
 
 开发模式运行
 ```
 $ yarn start
+或
+$ npm run start 
 ```
 
 构建生产
 ```
 $ yarn build
+或
+$ npm run build 
 ```
 
 ## 项目结构

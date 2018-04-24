@@ -17,6 +17,6 @@ describe('Homepage', () => {
             .evaluate(() => document.body.innerHTML)
             .end();
 
-        expect(text).toContain('<h1>React Web</h1>');
+        expect(text).toContain('<h1>首页</h1>');
     });
 });

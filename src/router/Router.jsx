@@ -7,8 +7,7 @@ import {
 } from 'react-router-dom'
 import 'nprogress/nprogress.css'
 import NProgress from 'nprogress'
-import {createBrowserHistory, createHashHistory} from 'history'
-
+import {createBrowserHistory} from 'history'
 import {connectComponent} from '../models';
 import Bundle from './Bundle'
 import pageRoutes from '../pages/page-routes.js'
@@ -24,13 +23,18 @@ import {isAuthenticated} from '../commons';
 
 const allRoutes = pageRoutes.concat(routes);
 
-let history = createBrowserHistory();
+// 检测路由path 是否有重复，并给出提示，相同path的路由会导致页面渲染错误
+const paths = allRoutes.map(item => item.path);
+const samePaths = [];
+paths.forEach(item => {
+    (item && paths.indexOf(item) !== paths.lastIndexOf(item) && samePaths.indexOf(item) === -1 && samePaths.push(item));
+});
 
-// 发布到git page 时，使用HashRouter
-if (process.env.REACT_APP_BUILD_ENV === 'preview') {
-    history = createHashHistory();
+if (samePaths && samePaths.length) {
+    console.error(`route path can not be same: ${samePaths.join(',')}`)
 }
 
+const history = createBrowserHistory();
 const renderBundle = (props) => (Com) => {
     if (!Com) {
         NProgress.start();
@@ -39,8 +43,8 @@ const renderBundle = (props) => (Com) => {
     NProgress.done();
 
     // 各种高阶函数包装，方便调用相关方法
-    Com = ajaxHoc()(withRouter(connectComponent(Com)));
-    return <Com {...props}/>;
+    const Comp = ajaxHoc()(withRouter(connectComponent(Com)));
+    return <Comp {...props}/>;
 };
 
 export default class extends Component {

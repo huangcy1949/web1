@@ -49,6 +49,7 @@ export default class UserCenterEdit extends Component {
     };
 
     render() {
+        console.log('render');
         const {form: {getFieldDecorator}, fetchingData, data} = this.props;
         const {isAdd} = this.state;
         const title = isAdd ? '添加用户中心' : '修改用户中心';

@@ -132,5 +132,5 @@ server {
 
 - [ ] babel 升级到7 使用 [optional-chaining](https://www.npmjs.com/package/babel-plugin-transform-optional-chaining)简化取值判断;
 - [ ] 前端监控，异常捕获
-- [ ] 各个模块内部独立xxx.modal.js，通过脚本生成modal；
+- [x] 各个模块内部独立xxx.modal.js，通过脚本生成modal；
 - [ ] redux库重构，存储同步改成中间件、去掉page相关内容

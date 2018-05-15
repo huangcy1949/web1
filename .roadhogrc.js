@@ -48,7 +48,11 @@ module.exports = {
         // "**/ActionsExample.jsx",
     ],
 
-    //
+    "modelPath": [
+        "./src/models/**/*.js",
+        "./src/pages/**/model.js",
+        "./src/pages/**/*.model.js",
+    ],
     "modelIgnore": [
         "**/index.js",
         "**/all-models.js"

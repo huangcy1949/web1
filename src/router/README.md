@@ -5,12 +5,12 @@
 做大型应用时，route比较多，写在一个routes.js文件中，一是routes.js会过于庞大，不好维护，二是团队协作时，很容易产生冲突。
 页面路由普遍情况只是一个`path`对应一个`component`，可以通过脚本生成；
 
-比如`User.jsx`文件头部定义`export const PAGE_ROUTE = '/base-information/business/users';`；
+比如`/path/to/User.jsx`文件头部定义`export const PAGE_ROUTE = '/base-information/business/users';`；
 `User.jsx`将会作为`component`,`'/base-information/business/users'`将会作为`path`，最终会在 `src/pages/page-routes.js`文件中生成如下结构：
 ```
 {
     path: '/base-information/business/users',
-    getComponent: () => import('path/to/User.jsx'),
+    getComponent: () => import('/path/to/User'),
 },
 ```
 

@@ -50,7 +50,7 @@ export default class EditPage extends Component {
         this.props.action.generator.getSrcDirs({
             onResolve: (dirs) => {
                 if (dirs && dirs.length) {
-                    const dir = dirs.find(item => item.value.endsWith('/src/models'));
+                    const dir = dirs.find(item => item.value.endsWith('/src/pages'));
                     if (dir) {
                         form.setFieldsValue({outPutDir: dir.value});
                     }
@@ -65,7 +65,7 @@ export default class EditPage extends Component {
         const name = nextProps.baseInfo.name.value;
 
         if (name !== oldName) {
-            const outPutFile = `${name}.js`;
+            const outPutFile = `${name}/model.js`;
 
             setFieldsValue({
                 outPutFile,

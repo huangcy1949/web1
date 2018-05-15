@@ -1,4 +1,4 @@
-import {ajax} from '../commons/ajax';
+import {ajax} from '../../commons/ajax';
 
 export default {
     initialState: {

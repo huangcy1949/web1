@@ -1,10 +1,10 @@
 # suixingpay-fe-admin
 
 基于 
-[react@16](https://reactjs.org/)
-[react-router@4x](https://reacttraining.com/react-router/) 
-[redux@3x](http://redux.js.org/) 
-[antd@3x](https://ant.design/) 
+[react@16.x](https://reactjs.org/)
+[react-router@4.x](https://reacttraining.com/react-router/) 
+[redux@3.x](http://redux.js.org/) 
+[antd@3.x](http://ant-design.gitee.io/index-cn) 
 的pc管理系统框架
 
 ## 相关文档
@@ -124,6 +124,11 @@ server {
        proxy_set_header Connection close;
        proxy_set_header X-Real-IP $remote_addr;
        proxy_set_header X-Forwarded-Server $host;
+    }
+    location /static/ {
+      expires 10y;
+      access_log off;
+      add_header Cache-Control "public";
     }
 }
 ```

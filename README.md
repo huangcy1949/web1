@@ -24,6 +24,8 @@
 
 可以使用[nrm](https://github.com/Pana/nrm)管理npm registry
 
+推荐使用yarn
+
 ```
 $ npm set registry http://172.16.132.188:4873/
 
@@ -33,8 +35,6 @@ $ npm set ca null
 
 $ yarn config set registry http://172.16.132.188:4873/
 ```
-
-注：windows下，yarn 切换成公司私服后，导致安装依赖错误，请使用`npm install`代替
 
 下载
 ```

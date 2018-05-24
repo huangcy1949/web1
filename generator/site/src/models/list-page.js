@@ -4,7 +4,7 @@ export default {
         routePath: {value: void 0},
         outPutDir: {value: void 0},
         outPutFile: {value: void 0},
-        template: {value: 'templates/list-edit/list.ejs'},
+        template: {value: 'templates/list-edit-ajax/list.ejs'},
         fields: {value: [{id: 'init-field', title: '', dataIndex: ''}]},
         queryItems: {value: []},
         toolItems: {value: []},

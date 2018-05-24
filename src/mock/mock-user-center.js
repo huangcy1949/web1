@@ -45,6 +45,7 @@ export default {
             }, 1000);
         });
     },
+    'get /mock/user-center/{id}': {id: 1, name: '熊大', age: 22},
     'post /mock/user-center': true,
     'put /mock/user-center': true,
     'delete /mock/user-center/{id}': 'id',

@@ -5,7 +5,7 @@ import FixBottom from '../../layouts/fix-bottom';
 import BaseInfo from '../../components/BaseInfo';
 import ListPage from '../../components/ListPage';
 import EditPage from '../../components/EditPage';
-import ListEditModel from '../../components/ListEditModel';
+// import ListEditModel from '../../components/ListEditModel';
 import PreviewCodeModal from '../../components/PreviewCodeModal';
 import {connect} from '../../models';
 import './style.less'
@@ -21,7 +21,7 @@ export default class Home extends Component {
         checkedPanels: {
             listPage: true,
             editPage: true,
-            listEditModel: true,
+            listEditModel: false,
         },
         codeForPreview: '',
         previewCodeModalVisible: false,
@@ -250,12 +250,14 @@ export default class Home extends Component {
                             onPreviewCode={this.handleEditPagePreviewCode}
                         />
                     </Panel>
+                    {/*
                     <Panel {...this.getPanelProps('列表页&编辑页model', 'listEditModel')}>
                         <ListEditModel
                             validate={validate => this.validateListEditModel = validate}
                             onPreviewCode={this.handleListEditModelPreviewCode}
                         />
                     </Panel>
+                    */}
                 </Collapse>
 
                 <PreviewCodeModal

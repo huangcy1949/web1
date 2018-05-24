@@ -56,9 +56,9 @@
         "redux": "^3.7.2",
         "rmc-feedback": "^1.0.4",
         "sx-ajax": "^1.0.0",
-        "sx-antd": "^3.0.1",
+        "sx-antd": "^3.0.7",
         "sx-build": "^1.0.21",
-        "sx-redux": "^1.0.0",
+        "sx-redux": "^1.0.2",
         "sx-utils": "^1.0.0",
         "uuid": "^3.1.0"
     },

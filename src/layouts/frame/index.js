@@ -50,17 +50,21 @@ export default class FrameTopSideMenu extends Component {
         const {action, action: {menu, side}} = this.props;
         // 从Storage中获取出需要同步到redux的数据
         action.getStateFromStorage();
-        menu.getMenuStatus();
-        side.show();
-        this.setBreadcrumbs();
+
+        setTimeout(() => { // 等待getStateFromStorage获取配置之后再设置
+            menu.getMenuStatus();
+            side.show();
+            this.setTitleAndBreadcrumbs();
+        });
+
         this.props.history.listen(() => {
             menu.getMenuStatus();
             side.show();
-            this.setBreadcrumbs();
+            this.setTitleAndBreadcrumbs();
         });
     }
 
-    setBreadcrumbs() {
+    setTitleAndBreadcrumbs() {
         const {action: {page}, pageHeadShow, menus} = this.props;
 
         const selectedMenu = getSelectedMenuByPath(window.location.pathname, menus);

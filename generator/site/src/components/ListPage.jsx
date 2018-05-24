@@ -135,6 +135,7 @@ export default class ListPage extends Component {
                 const deleteItem = {
                     disabled: (!value || value.length <= 1), // 只用一个字段时，不予许删除
                     label: '删除',
+                    color: 'red',
                     confirm: {
                         title: `您确定要删除"${title || dataIndex}"吗？`,
                         onConfirm: () => {
@@ -156,7 +157,7 @@ export default class ListPage extends Component {
                 const items = [
                     deleteItem,
                     {
-                        disabled: queryItemExist || !dataIndex,
+                        disabled: !!queryItemExist || !dataIndex,
                         label: '作为条件',
                         onClick: () => {
                             const items = [...queryItems.value];

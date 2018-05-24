@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import {Form, Input, Button} from 'antd';
 import {FormItemLayout} from 'sx-antd';
-import PageContent from '../../layouts/page-content';
-import {ajaxHoc} from '../../commons/ajax';
+import PageContent from '<%= fileLevel%>layouts/page-content';
+import {ajaxHoc} from '<%= fileLevel%>commons/ajax';
 
-export const PAGE_ROUTE = '/user-center/+edit/:id';
+export const PAGE_ROUTE = '<%= routePath %>';
 
 @ajaxHoc()
 @Form.create()
-export default class UserCenterEdit extends Component {
+export default class <%= capitalName %>Edit extends Component {
     state = {
         loading: false,
         data: {},
@@ -23,7 +23,7 @@ export default class UserCenterEdit extends Component {
         } else {
             this.setState({isAdd: false, loading: true});
             this.props.ajax
-                .get(`/mock/user-center/${id}`)
+                .get(`<%= ajaxUrl %>/${id}`)
                 .then(res => {
                     if (res) {
                         this.setState({data: res});
@@ -45,7 +45,7 @@ export default class UserCenterEdit extends Component {
                 const submitAjax = isAdd ? this.props.ajax.post : this.props.ajax.put;
                 const successTip = isAdd ? '添加成功' : '修改成功';
 
-                submitAjax('/mock/user-center', values, {successTip, onResolve: () => history.push('/user-center')});
+                submitAjax('<%= ajaxUrl %>', values, {successTip, onResolve: () => history.push('<%= listPageRoutePath %>')});
             }
         });
     };
@@ -57,7 +57,7 @@ export default class UserCenterEdit extends Component {
     render() {
         const {form: {getFieldDecorator}} = this.props;
         const {isAdd, loading, data} = this.state;
-        const title = isAdd ? '添加用户中心' : '修改用户中心';
+        const title = isAdd ? '添加<%= chineseName %>' : '修改<%= chineseName %>';
 
         const labelSpaceCount = 4;
 
@@ -66,22 +66,22 @@ export default class UserCenterEdit extends Component {
                 <h1 style={{textAlign: 'center'}}>{title}</h1>
                 <Form onSubmit={this.handleSubmit}>
                     {!isAdd ? getFieldDecorator('id', {initialValue: data.id})(<Input type="hidden"/>) : null}
-
+<% for (let i = 0;i<fields.length;i++){%>
                     <FormItemLayout
-                        label="用户名"
+                        label="<%= fields[i].title%>"
                         labelSpaceCount={labelSpaceCount}
                         width={300}
                     >
-                        {getFieldDecorator('name', {
-                            initialValue: data.name,
+                        {getFieldDecorator('<%= fields[i].dataIndex%>', {
+                            initialValue: data.<%= fields[i].dataIndex%>,
                             rules: [
-                                {required: true, message: '请输入用户名！'},
+                                {required: true, message: '请输入<%= fields[i].title%>！'},
                             ],
                         })(
-                            <Input placeholder="请输入用户名"/>
+                            <Input placeholder="请输入<%= fields[i].title%>"/>
                         )}
                     </FormItemLayout>
-
+<%}%>
                     <FormItemLayout
                         labelSpaceCount={labelSpaceCount}
                     >

@@ -12,6 +12,8 @@ import {configureStore} from './models';
 import './polyfill';
 import App from './App';
 import './index.less';
+import 'sx-antd/lib/index.min.css';
+import 'sx-antd/lib/font-icon/font-awesome/css/font-awesome.min.css';
 
 if (process.env.NODE_ENV === 'development'
     || process.env.NODE_ENV === 'dev'

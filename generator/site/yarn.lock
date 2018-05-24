@@ -8874,9 +8874,9 @@ sx-ajax@^1.0.0:
     axios "^0.17.1"
     qs "^6.5.0"
 
-sx-antd@^3.0.1:
-  version "3.0.3"
-  resolved "http://172.16.132.188:4873/sx-antd/-/sx-antd-3.0.3.tgz#630178d836c786222d1ddac9cac4ae6cdca5fdb0"
+sx-antd@^3.0.7:
+  version "3.0.7"
+  resolved "http://172.16.132.188:4873/sx-antd/-/sx-antd-3.0.7.tgz#537fab3b5418710ece2e07fea6ab95c1b7d639af"
   dependencies:
     animate.css "^3.6.1"
     classnames "^2.2.5"
@@ -8884,7 +8884,6 @@ sx-antd@^3.0.1:
     prop-types "^15.6.1"
     react-dnd "^2.6.0"
     react-dnd-html5-backend "^2.6.0"
-    uuid "^3.2.1"
 
 sx-build@^1.0.21:
   version "1.0.21"
@@ -8967,9 +8966,9 @@ sx-build@^1.0.21:
     webpack-visualizer-plugin "^0.1.6"
     yargs "^8.0.1"
 
-sx-redux@^1.0.0:
-  version "1.0.1"
-  resolved "http://172.16.132.188:4873/sx-redux/-/sx-redux-1.0.1.tgz#cd0ba1b43012ea6e888b11a7166a415367298a80"
+sx-redux@^1.0.2:
+  version "1.0.2"
+  resolved "http://172.16.132.188:4873/sx-redux/-/sx-redux-1.0.2.tgz#828e88d4c926a30d4b50c3105f8374045e08550e"
   dependencies:
     flux-standard-action "^2.0.0"
     lodash "^4.17.4"
@@ -9421,10 +9420,6 @@ uuid@^2.0.2:
 uuid@^3.0.0, uuid@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.1.0.tgz#3dd3d3e790abc24d7b0d3a034ffababe28ebbc04"
-
-uuid@^3.2.1:
-  version "3.2.1"
-  resolved "http://172.16.132.188:4873/uuid/-/uuid-3.2.1.tgz#12c528bb9d58d0b9265d9a2f6f0fe8be17ff1f14"
 
 validate-npm-package-license@^3.0.1:
   version "3.0.1"

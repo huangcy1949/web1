@@ -2,7 +2,7 @@ export default {
     initialState: {
         outPutDir: {value: void 0},
         outPutFile: {value: void 0},
-        template: {value: 'templates/model/list-edit-model.ejs'},
+        template: {value: 'templates/list-edit-model/model.ejs'},
         loading: false,
     },
 

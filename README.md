@@ -102,7 +102,11 @@ $ npm run build
 注：`api` 为前后端约定的请求地址前缀，一般axios`baseURL`也配置成 `api` ，具体以团队约定为准。
 
 ### 生产环境
-前后端分离 ngnix配置 参考：
+前后端分离 ngnix配置 仅供参考：
+
+js css static 这三个目录中的文件可以设置为强缓存：expires 10y;
+
+
 ```
 # 服务地址
 upstream api_service {
@@ -118,6 +122,7 @@ server {
       index index.html;
       try_files $uri $uri/ /index.html; # 所有的HTTP请求跳转到首页，路由跳转由前端处理
     }
+    
     location ^~/api { # 代理ajax请求
        proxy_pass http://api_service/;
        proxy_set_header Host  $http_host;
@@ -125,7 +130,9 @@ server {
        proxy_set_header X-Real-IP $remote_addr;
        proxy_set_header X-Forwarded-Server $host;
     }
-    location /static/ {
+    
+    location /css/ { # 静态文件，缓存设置
+      root /home/app/nginx/html;
       expires 10y;
       access_log off;
       add_header Cache-Control "public";

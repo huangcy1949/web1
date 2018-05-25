@@ -108,34 +108,35 @@ js css static 这三个目录中的文件可以设置为强缓存：expires 10y;
 
 
 ```
-# 服务地址
+# 后端服务地址
 upstream api_service {
   server localhost:8080;
   keepalive 2000;
 }
-#
+
 server {
     listen       80;
-    server_name  localhost;
+    server_name  www.shubin.wang shubin.wang;
+    root /home/admin/deploy/react-web-boilerplate/dist;
     location / {
-      root /home/app/nginx/html; # 前端打包之后的文件存放路径
       index index.html;
-      try_files $uri $uri/ /index.html; # 所有的HTTP请求跳转到首页，路由跳转由前端处理
+      try_files $uri $uri/ /index.html; #react-router 防止页面刷新出现404
+    }
+
+    # 静态文件缓存，启用Cache-Control: max-age、Expires
+    location ~ ^/(css|js|static)/ {
+      expires 10y;
+      access_log off;
+      add_header Cache-Control "public";
     }
     
-    location ^~/api { # 代理ajax请求
+     # 代理ajax请求
+    location ^~/api {
        proxy_pass http://api_service/;
        proxy_set_header Host  $http_host;
        proxy_set_header Connection close;
        proxy_set_header X-Real-IP $remote_addr;
        proxy_set_header X-Forwarded-Server $host;
-    }
-    
-    location /css/ { # 静态文件，缓存设置
-      root /home/app/nginx/html;
-      expires 10y;
-      access_log off;
-      add_header Cache-Control "public";
     }
 }
 ```

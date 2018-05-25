@@ -73,7 +73,8 @@ export default class <%= capitalName %>List extends Component {
                         },
                     },
                     {
-                        label: '删除',<% if(permissionPrefix){%>
+                        label: '删除',
+                        color: 'red',<% if(permissionPrefix){%>
                         visible: hasPermission('<%= permissionPrefix %>_DELETE'),<%}%>
                         confirm: {
                             title: `您确定要删除“${<%= fields[0].dataIndex%>}”？`,
@@ -126,7 +127,7 @@ export default class <%= capitalName %>List extends Component {
                         columns: this.columns,
                         dataSource,
                         // TODO 这个rowKey未必正确
-                        rowKey: record => record.id,
+                        rowKey: 'id',
                     }}
                 /><%if(bottomToolItems && bottomToolItems.length){%>
                 <FixBottom right>

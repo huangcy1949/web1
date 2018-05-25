@@ -70,17 +70,47 @@ export default class UserCenterEdit extends Component {
                     {!isAdd ? getFieldDecorator('id', {initialValue: data.id})(<Input type="hidden"/>) : null}
 
                     <FormItemLayout
-                        label="用户名"
+                        label="姓名"
                         labelSpaceCount={labelSpaceCount}
                         width={300}
                     >
                         {getFieldDecorator('name', {
                             initialValue: data.name,
                             rules: [
-                                {required: true, message: '请输入用户名！'},
+                                {required: true, message: '请输入姓名！'},
                             ],
                         })(
-                            <Input placeholder="请输入用户名"/>
+                            <Input placeholder="请输入姓名"/>
+                        )}
+                    </FormItemLayout>
+
+                    <FormItemLayout
+                        label="年龄"
+                        labelSpaceCount={labelSpaceCount}
+                        width={300}
+                    >
+                        {getFieldDecorator('age', {
+                            initialValue: data.age,
+                            rules: [
+                                {required: true, message: '请输入年龄！'},
+                            ],
+                        })(
+                            <Input placeholder="请输入年龄"/>
+                        )}
+                    </FormItemLayout>
+
+                    <FormItemLayout
+                        label="工作"
+                        labelSpaceCount={labelSpaceCount}
+                        width={300}
+                    >
+                        {getFieldDecorator('job', {
+                            initialValue: data.job,
+                            rules: [
+                                {required: true, message: '请输入工作！'},
+                            ],
+                        })(
+                            <Input placeholder="请输入工作"/>
                         )}
                     </FormItemLayout>
 

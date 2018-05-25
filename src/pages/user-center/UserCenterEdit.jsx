@@ -45,7 +45,9 @@ export default class UserCenterEdit extends Component {
                 const submitAjax = isAdd ? this.props.ajax.post : this.props.ajax.put;
                 const successTip = isAdd ? '添加成功' : '修改成功';
 
-                submitAjax('/mock/user-center', values, {successTip, onResolve: () => history.push('/user-center')});
+                this.setState({loading: true});
+                submitAjax('/mock/user-center', values, {successTip})
+                    .then(() => history.push('/user-center'));
             }
         });
     };

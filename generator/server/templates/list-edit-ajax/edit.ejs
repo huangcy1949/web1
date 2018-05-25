@@ -45,7 +45,9 @@ export default class <%= capitalName %>Edit extends Component {
                 const submitAjax = isAdd ? this.props.ajax.post : this.props.ajax.put;
                 const successTip = isAdd ? '添加成功' : '修改成功';
 
-                submitAjax('<%= ajaxUrl %>', values, {successTip, onResolve: () => history.push('<%= listPageRoutePath %>')});
+                this.setState({loading: true});
+                submitAjax('<%= ajaxUrl %>', values, {successTip})
+                    .then(() => history.push('<%= listPageRoutePath %>'));
             }
         });
     };

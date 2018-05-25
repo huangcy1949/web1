@@ -19,8 +19,6 @@ export default class LongString extends Component {
     }
 }
 
-a=1;
-
 class Chunk extends React.Component {
     state = {
         str: '',

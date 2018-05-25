@@ -100,21 +100,6 @@ export default class UserCenterEdit extends Component {
                     </FormItemLayout>
 
                     <FormItemLayout
-                        label="工作"
-                        labelSpaceCount={labelSpaceCount}
-                        width={300}
-                    >
-                        {getFieldDecorator('job', {
-                            initialValue: data.job,
-                            rules: [
-                                {required: true, message: '请输入工作！'},
-                            ],
-                        })(
-                            <Input placeholder="请输入工作"/>
-                        )}
-                    </FormItemLayout>
-
-                    <FormItemLayout
                         labelSpaceCount={labelSpaceCount}
                     >
                         <Button

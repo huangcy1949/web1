@@ -4,7 +4,6 @@
     "description": "An out-of-box UI solution for enterprise applications",
     "private": true,
     "scripts": {
-        "precommit": "npm run lint-staged",
         "dev": "sx-build server",
         "start": "cross-env PORT=8001 sx-build server",
         "build": "cross-env NODE_ENV=production sx-build build && rimraf ../server/dist && cp -r ./dist/ ../server/dist",

@@ -70,32 +70,77 @@ export default class UserCenterEdit extends Component {
                     {!isAdd ? getFieldDecorator('id', {initialValue: data.id})(<Input type="hidden"/>) : null}
 
                     <FormItemLayout
-                        label="姓名"
+                        label="类型"
                         labelSpaceCount={labelSpaceCount}
                         width={300}
                     >
-                        {getFieldDecorator('name', {
-                            initialValue: data.name,
+                        {getFieldDecorator('fileType', {
+                            initialValue: data.fileType,
                             rules: [
-                                {required: true, message: '请输入姓名！'},
+                                {required: true, message: '请输入类型！'},
                             ],
                         })(
-                            <Input placeholder="请输入姓名"/>
+                            <Input placeholder="请输入类型"/>
                         )}
                     </FormItemLayout>
 
                     <FormItemLayout
-                        label="年龄"
+                        label="名称"
                         labelSpaceCount={labelSpaceCount}
                         width={300}
                     >
-                        {getFieldDecorator('age', {
-                            initialValue: data.age,
+                        {getFieldDecorator('fieldName', {
+                            initialValue: data.fieldName,
                             rules: [
-                                {required: true, message: '请输入年龄！'},
+                                {required: true, message: '请输入名称！'},
                             ],
                         })(
-                            <Input placeholder="请输入年龄"/>
+                            <Input placeholder="请输入名称"/>
+                        )}
+                    </FormItemLayout>
+
+                    <FormItemLayout
+                        label="描述"
+                        labelSpaceCount={labelSpaceCount}
+                        width={300}
+                    >
+                        {getFieldDecorator('fieldDes', {
+                            initialValue: data.fieldDes,
+                            rules: [
+                                {required: true, message: '请输入描述！'},
+                            ],
+                        })(
+                            <Input placeholder="请输入描述"/>
+                        )}
+                    </FormItemLayout>
+
+                    <FormItemLayout
+                        label="路径"
+                        labelSpaceCount={labelSpaceCount}
+                        width={300}
+                    >
+                        {getFieldDecorator('filePath', {
+                            initialValue: data.filePath,
+                            rules: [
+                                {required: true, message: '请输入路径！'},
+                            ],
+                        })(
+                            <Input placeholder="请输入路径"/>
+                        )}
+                    </FormItemLayout>
+
+                    <FormItemLayout
+                        label="创建人"
+                        labelSpaceCount={labelSpaceCount}
+                        width={300}
+                    >
+                        {getFieldDecorator('creater', {
+                            initialValue: data.creater,
+                            rules: [
+                                {required: true, message: '请输入创建人！'},
+                            ],
+                        })(
+                            <Input placeholder="请输入创建人"/>
                         )}
                     </FormItemLayout>
 

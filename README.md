@@ -14,9 +14,8 @@
 - [router(路由)](http://192.168.120.68/root/suixingpay-fe-admin/blob/master/src/router/README.md)
 
 ## 依赖
-1. nodejs v8.10.0，推荐使用[nvm](https://github.com/creationix/nvm)管理node版本
-1. yarn v1.3.2
-1. 兼容windwos / mac / ubuntu
+1. [nodejs v8.10.0](https://nodejs.org/en/)，推荐使用[nvm](https://github.com/creationix/nvm)管理node版本
+1. [yarn v1.3.2](https://yarnpkg.com/zh-Hans/)
 
 ## 安装 & 启动
 

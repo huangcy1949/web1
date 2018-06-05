@@ -59,7 +59,7 @@ export default class UserCenterEdit extends Component {
     render() {
         const {form: {getFieldDecorator}} = this.props;
         const {isAdd, loading, data} = this.state;
-        const title = isAdd ? '添加用户中心' : '修改用户中心';
+        const title = isAdd ? '添加用户' : '修改用户';
 
         const labelSpaceCount = 4;
 
@@ -70,77 +70,47 @@ export default class UserCenterEdit extends Component {
                     {!isAdd ? getFieldDecorator('id', {initialValue: data.id})(<Input type="hidden"/>) : null}
 
                     <FormItemLayout
-                        label="类型"
+                        label="用户名"
                         labelSpaceCount={labelSpaceCount}
                         width={300}
                     >
-                        {getFieldDecorator('fileType', {
-                            initialValue: data.fileType,
+                        {getFieldDecorator('name', {
+                            initialValue: data.name,
                             rules: [
-                                {required: true, message: '请输入类型！'},
+                                {required: true, message: '请输入用户名！'},
                             ],
                         })(
-                            <Input placeholder="请输入类型"/>
+                            <Input placeholder="请输入用户名"/>
                         )}
                     </FormItemLayout>
 
                     <FormItemLayout
-                        label="名称"
+                        label="年龄"
                         labelSpaceCount={labelSpaceCount}
                         width={300}
                     >
-                        {getFieldDecorator('fieldName', {
-                            initialValue: data.fieldName,
+                        {getFieldDecorator('age', {
+                            initialValue: data.age,
                             rules: [
-                                {required: true, message: '请输入名称！'},
+                                {required: true, message: '请输入年龄！'},
                             ],
                         })(
-                            <Input placeholder="请输入名称"/>
+                            <Input placeholder="请输入年龄"/>
                         )}
                     </FormItemLayout>
 
                     <FormItemLayout
-                        label="描述"
+                        label="工作"
                         labelSpaceCount={labelSpaceCount}
                         width={300}
                     >
-                        {getFieldDecorator('fieldDes', {
-                            initialValue: data.fieldDes,
+                        {getFieldDecorator('job', {
+                            initialValue: data.job,
                             rules: [
-                                {required: true, message: '请输入描述！'},
+                                {required: true, message: '请输入工作！'},
                             ],
                         })(
-                            <Input placeholder="请输入描述"/>
-                        )}
-                    </FormItemLayout>
-
-                    <FormItemLayout
-                        label="路径"
-                        labelSpaceCount={labelSpaceCount}
-                        width={300}
-                    >
-                        {getFieldDecorator('filePath', {
-                            initialValue: data.filePath,
-                            rules: [
-                                {required: true, message: '请输入路径！'},
-                            ],
-                        })(
-                            <Input placeholder="请输入路径"/>
-                        )}
-                    </FormItemLayout>
-
-                    <FormItemLayout
-                        label="创建人"
-                        labelSpaceCount={labelSpaceCount}
-                        width={300}
-                    >
-                        {getFieldDecorator('creater', {
-                            initialValue: data.creater,
-                            rules: [
-                                {required: true, message: '请输入创建人！'},
-                            ],
-                        })(
-                            <Input placeholder="请输入创建人"/>
+                            <Input placeholder="请输入工作"/>
                         )}
                     </FormItemLayout>
 

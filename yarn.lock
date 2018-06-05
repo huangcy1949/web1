@@ -9163,9 +9163,9 @@ sx-build@^1.0.27:
     webpack-visualizer-plugin "^0.1.6"
     yargs "^8.0.1"
 
-sx-gen@^0.0.10:
-  version "0.0.10"
-  resolved "http://172.16.132.188:4873/sx-gen/-/sx-gen-0.0.10.tgz#2a1b5fef9d57b0b2dd2f3bddc54d8c06491ff9c2"
+sx-gen@^0.0.11:
+  version "0.0.11"
+  resolved "http://172.16.132.188:4873/sx-gen/-/sx-gen-0.0.11.tgz#9ca3693aa2dd2ffe31a1e9f701b1bc4dbc93d68b"
   dependencies:
     body-parser "^1.18.2"
     cross-env "^5.1.6"

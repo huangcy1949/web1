@@ -40,6 +40,10 @@ export default class App extends Component {
 
     componentWillMount() {
         // 渲染页面开始之前的一些准备工作
+
+        // 从Storage中获取出需要同步到redux的数据
+        this.props.action.getStateFromStorage();
+
         const userId = currentLoginUser && currentLoginUser.id;
         if (userId) {
             // 根据用户id查询用户菜单权限

@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 
+export const PAGE_ROUTE = '/example/users';
+
 export default class UserList extends Component {
 
     render() {

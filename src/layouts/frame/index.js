@@ -47,9 +47,7 @@ export default class FrameTopSideMenu extends Component {
     };
 
     componentWillMount() {
-        const {action, action: {menu, side}} = this.props;
-        // 从Storage中获取出需要同步到redux的数据
-        action.getStateFromStorage();
+        const {action: {menu, side}} = this.props;
 
         setTimeout(() => { // 等待getStateFromStorage获取配置之后再设置
             menu.getMenuStatus();

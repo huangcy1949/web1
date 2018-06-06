@@ -4,6 +4,7 @@ import './style.less'
 
 @connect(state => ({menus: state.menu.menus}))
 export default class Home extends Component {
+
     componentWillMount() {
 
         /*
@@ -24,6 +25,10 @@ export default class Home extends Component {
             }
         }
         * */
+    }
+
+    componentDidMount() {
+        setTimeout(this.props.action.page.hideHead);
     }
 
     render() {

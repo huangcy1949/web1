@@ -100,6 +100,20 @@ $ npm run build
 ```
 注：`api` 为前后端约定的请求地址前缀，一般axios`baseURL`也配置成 `api` ，具体以团队约定为准。
 
+
+## ESLint 说明
+如果前端项目，不是git根目录，在提交的时候，会报错 `Not a git repository`
+
+修改package.json，lint-staged 如下即可
+```
+"lint-staged": {
+    "gitDir": "../",
+    "linters": {
+        "**/*.{js,jsx}": "lint-staged:js",
+        "**/*.less": "stylelint --syntax less"
+    }
+},
+```
 ### 生产环境
 前后端分离 ngnix配置 仅供参考：
 

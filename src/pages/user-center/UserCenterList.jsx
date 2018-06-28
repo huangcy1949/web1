@@ -20,6 +20,14 @@ export default class UserCenterList extends Component {
         [
             {
                 type: 'input',
+                field: 'name',
+                label: '姓名',
+                labelSpaceCount: 4,
+                width: 200,
+                placeholder: '请输入姓名',
+            },
+            {
+                type: 'input',
                 field: 'age',
                 label: '年龄',
                 labelSpaceCount: 4,
@@ -28,11 +36,11 @@ export default class UserCenterList extends Component {
             },
             {
                 type: 'input',
-                field: 'name',
-                label: '用户名',
+                field: 'fieldName',
+                label: '名称',
                 labelSpaceCount: 4,
                 width: 200,
-                placeholder: '请输入用户名',
+                placeholder: '请输入名称',
             },
         ],
     ];
@@ -62,15 +70,21 @@ export default class UserCenterList extends Component {
     ];
 
     columns = [
-        {title: '用户名', dataIndex: 'name'},
         {title: '年龄', dataIndex: 'age'},
-        {title: '工作', dataIndex: 'job'},
+        {title: '姓名', dataIndex: 'name'},
+        {title: '类型', dataIndex: 'fileType'},
+        {title: '名称', dataIndex: 'fieldName'},
+        {title: '描述', dataIndex: 'fieldDes'},
+        {title: '路径', dataIndex: 'filePath'},
+        {title: '创建人', dataIndex: 'creater'},
+        {title: '创建时间', dataIndex: 'createdDate'},
+        {title: '版本', dataIndex: 'version'},
         {
             title: '操作',
             key: 'operator',
             render: (text, record) => {
-                const {id, name} = record;
-                const successTip = `删除“${name}”成功！`;
+                const {id, age} = record;
+                const successTip = `删除“${age}”成功！`;
                 const items = [
                     {
                         label: '修改',
@@ -82,7 +96,7 @@ export default class UserCenterList extends Component {
                         label: '删除',
                         color: 'red',
                         confirm: {
-                            title: `您确定要删除“${name}”？`,
+                            title: `您确定要删除“${age}”？`,
                             onConfirm: () => {
                                 this.props.ajax.del(`/mock/user-center/${id}`, null, {successTip});
                             },
